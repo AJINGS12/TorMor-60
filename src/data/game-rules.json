@@ -386,7 +386,7 @@
       "cta":      { "en": "Become an Immigration Officer", "th": "มาเป็นเจ้าหน้าที่ตรวจคนเข้าเมือง" },
       "logo":       { "en": "TOR MOR 60", "th": "TOR MOR 60" },
       "logoBadge":  { "en": "ตม. 60", "th": "ตม. 60" },
-      "subtitle":   { "en": "Be the Immigration Officer for 60 seconds", "th": "มาเป็นเจ้าหน้าที่ตรวจคนเข้าเมือง 60 วินาที" },
+      "subtitle":   { "en": "Be the Immigration Officer for 60 seconds", "th": "ลองเป็นเจ้าหน้าที่ ตม. ใน 60 วินาที" },
       "topOfficers": { "en": "Top officers", "th": "เจ้าหน้าที่ยอดฝีมือ" },
       "byNitify":   { "en": "by Nitify", "th": "โดย Nitify" }
     },

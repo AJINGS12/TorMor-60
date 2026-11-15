@@ -19,7 +19,6 @@ const screens: Record<Screen, ComponentType> = {
 export default function App() {
   const screen = useGameStore((s) => s.screen)
   const Current = screens[screen]
-  const fullBleed = screen === 'game'
 
   return (
     <LanguageProvider>
@@ -30,15 +29,9 @@ export default function App() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className={fullBleed ? 'h-full' : 'flex min-h-full items-center justify-center bg-night-950 p-6'}
+          className="min-h-full"
         >
-          {fullBleed ? (
-            <Current />
-          ) : (
-            <div className="w-full max-w-3xl">
-              <Current />
-            </div>
-          )}
+          <Current />
         </motion.div>
       </AnimatePresence>
     </LanguageProvider>

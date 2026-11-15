@@ -48,8 +48,8 @@ export default function Leaderboard({ limit, highlightId, compact = false }: { l
               transition={{ delay: 0.05 * i }}
               className={mine ? 'bg-neon-pink/20 ring-2 ring-neon-pink glow-pink' : 'bg-night-800/70'}
             >
-              <td className="rounded-l-lg px-2 py-2 text-lg font-extrabold">{MEDALS[i] ?? i + 1}</td>
-              <td className="max-w-[10rem] truncate px-2 py-2 text-lg font-semibold">
+              <td className="w-12 rounded-l-lg px-2 py-2 text-lg font-extrabold">{MEDALS[i] ?? i + 1}</td>
+              <td className="max-w-[10rem] truncate px-2 py-2 text-left text-lg font-semibold">
                 {e.nickname}
                 {mine && <span className="ml-2 rounded-full bg-neon-pink px-2 py-0.5 text-xs font-bold text-night-950">{t(ui.you)}</span>}
               </td>
