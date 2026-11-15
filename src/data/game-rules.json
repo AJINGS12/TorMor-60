@@ -427,6 +427,8 @@
       "strikes": { "en": "Strikes", "th": "ความผิดพลาด" },
       "next":    { "en": "Next traveller", "th": "ผู้เดินทางคนถัดไป" },
       "finish":  { "en": "See results", "th": "ดูผลลัพธ์" },
+      "mute":    { "en": "Mute sound", "th": "ปิดเสียง" },
+      "unmute":  { "en": "Turn sound on", "th": "เปิดเสียง" },
       "score":   { "en": "Score", "th": "คะแนน" },
       "travellerCount": { "en": "Traveller {n}/{total}", "th": "ผู้เดินทาง {n}/{total}" },
       "seconds": { "en": "{seconds}s", "th": "{seconds} วิ" },

@@ -2,6 +2,8 @@ import { AnimatePresence, motion, useAnimate } from 'framer-motion'
 import { useState } from 'react'
 import CaseResult from '../components/CaseResult'
 import Counter from '../components/Counter'
+import Countdown from '../components/Countdown'
+import MuteToggle from '../components/MuteToggle'
 import DenyReasonPicker from '../components/DenyReasonPicker'
 import DocumentCard from '../components/DocumentCard'
 import { StampSlam } from '../components/Stamp'
@@ -52,6 +54,7 @@ function TopBar({ onOpenRulebook }: { onOpenRulebook: () => void }) {
       >
         📘 {t(ui.rulebook)}
       </button>
+      <MuteToggle />
       <LanguageToggle />
     </header>
   )
@@ -168,6 +171,7 @@ export default function Game() {
           {/* Traveller area */}
           <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
             <Backdrop />
+            <Countdown />
             <div className="relative min-h-0 flex-1 pt-16">
               <AnimatePresence mode="wait">
                 <Traveller
