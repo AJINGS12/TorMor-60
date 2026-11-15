@@ -3,6 +3,7 @@ import { rules } from '../engine/rules'
 import type { Traveller as TravellerData } from '../engine/types'
 import { useText } from '../i18n/useText'
 import Avatar from './Avatar'
+import Flag from './Flag'
 
 const walk: Variants = {
   hidden: { x: '-70vw', opacity: 0 },
@@ -36,7 +37,7 @@ export default function Traveller({
     >
       {/* Tag above the head */}
       <div className="mb-1 flex items-center gap-2 rounded-full bg-night-900/90 px-3 py-1.5 text-sm font-semibold whitespace-nowrap ring-1 ring-neon-cyan/50 glow-cyan sm:text-base">
-        <span className="text-xl leading-none">{traveller.country.flag}</span>
+        <Flag code={traveller.country.code} className="h-5" />
         <span className="text-white">{t(traveller.country)}</span>
         <span className="text-neon-cyan">· {t(persona)}</span>
       </div>

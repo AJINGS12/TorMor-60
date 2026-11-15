@@ -4,6 +4,7 @@ import { findCountry, purposes, rules } from '../engine/rules'
 import type { LocalizedText, Traveller } from '../engine/types'
 import { useText } from '../i18n/useText'
 import Avatar from './Avatar'
+import Flag from './Flag'
 
 const f = rules.ui.game.fields
 
@@ -33,7 +34,14 @@ function useCountryName() {
   return (code: string | null) => {
     if (!code) return t(f.none)
     const c = findCountry(code)
-    return c ? `${c.flag} ${t(c)}` : code
+    return c ? (
+      <span className="inline-flex items-center gap-1.5">
+        <Flag code={c.code} className="h-4" />
+        {t(c)}
+      </span>
+    ) : (
+      code
+    )
   }
 }
 
