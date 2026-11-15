@@ -1,0 +1,418 @@
+{
+  "meta": {
+    "game": "Border Control",
+    "version": "1.0.0",
+    "rulesAsOf": "2026-11-15",
+    "rulesNote": "Based on Thailand's visa exemption rules effective 15 Sep 2026 (30-day exemption list, Royal Gazette 31 Aug 2026). Simplified for gameplay.",
+    "disclaimer": {
+      "en": "Rules simplified for gameplay. Real immigration rules change often — they changed in September 2026! Nitify keeps you up to date.",
+      "th": "กฎในเกมนี้ถูกทำให้ง่ายขึ้นเพื่อการเล่น กฎตรวจคนเข้าเมืองจริงเปลี่ยนบ่อย — เพิ่งเปลี่ยนเมื่อกันยายน 2026! Nitify ช่วยให้คุณรู้ข้อมูลล่าสุดเสมอ"
+    },
+    "sources": [
+      "https://image.mfa.go.th/mfa/0/TkZZJfspCP/Visa_Exemption_Scheme/PR-eng.pdf",
+      "https://tdac.immigration.go.th",
+      "https://buenos-aires.thaiembassy.org/en/content/announcement-on-yellow-fever-vaccination-requireme",
+      "https://washingtondc.thaiembassy.org/en/page/yellow-fever-2"
+    ]
+  },
+
+  "config": {
+    "travellersPerGame": 5,
+    "timePerTravellerSec": 60,
+    "questionAnswerDelaySec": 2,
+    "strikesToFail": 3,
+    "flawChance": 0.5,
+    "maxFlawsPerTraveller": 1,
+    "gameDate": "runtime_today",
+    "scoring": {
+      "correctDecision": 100,
+      "correctDenyReason": 50,
+      "necessaryQuestionAsked": 20,
+      "unnecessaryQuestionAsked": 0,
+      "missedNecessaryQuestion": 0,
+      "speedBonusMax": 50,
+      "speedBonusFormula": "floor(secondsLeft / timePerTravellerSec * speedBonusMax)",
+      "wrongDecision": 0,
+      "timeout": 0,
+      "streakThreshold": 3,
+      "streakMultiplier": 1.5
+    },
+    "strikeOn": ["wrongDecision", "timeout"],
+    "ranks": [
+      { "minScore": 0,    "en": "Trainee Officer",  "th": "เจ้าหน้าที่ฝึกหัด" },
+      { "minScore": 400,  "en": "Officer",          "th": "เจ้าหน้าที่ตรวจคนเข้าเมือง" },
+      { "minScore": 800,  "en": "Senior Officer",   "th": "เจ้าหน้าที่อาวุโส" },
+      { "minScore": 1100, "en": "Chief Inspector",  "th": "หัวหน้าผู้ตรวจการ" },
+      { "minScore": 1350, "en": "Border Legend",    "th": "ตำนานด่านตรวจ" }
+    ]
+  },
+
+  "documents": {
+    "passport":          { "en": "Passport",                          "th": "หนังสือเดินทาง",                      "alwaysOnDesk": true },
+    "tdac":              { "en": "TDAC (Digital Arrival Card)",       "th": "บัตรขาเข้าดิจิทัล (TDAC)",             "alwaysOnDesk": false },
+    "return_ticket":     { "en": "Return / Onward Ticket",            "th": "ตั๋วขากลับ / ตั๋วเดินทางต่อ",          "alwaysOnDesk": false },
+    "tourist_visa":      { "en": "Tourist Visa (TR)",                 "th": "วีซ่าท่องเที่ยว (TR)",                 "alwaysOnDesk": false },
+    "student_visa":      { "en": "Student Visa (Non-Immigrant ED)",   "th": "วีซ่านักเรียน (Non-Immigrant ED)",     "alwaysOnDesk": false },
+    "work_visa":         { "en": "Work Visa (Non-Immigrant B)",       "th": "วีซ่าทำงาน (Non-Immigrant B)",         "alwaysOnDesk": false },
+    "yellow_fever_cert": { "en": "Yellow Fever Certificate",          "th": "ใบรับรองการฉีดวัคซีนไข้เหลือง",       "alwaysOnDesk": false }
+  },
+
+  "purposes": {
+    "tourism": { "en": "Tourism", "th": "ท่องเที่ยว", "weight": 0.6, "stayDaysRange": [5, 45],  "visaDocIfRequired": "tourist_visa" },
+    "study":   { "en": "Study",   "th": "ศึกษาต่อ",   "weight": 0.25, "stayDaysRange": [120, 365], "visaDocIfRequired": "student_visa" },
+    "work":    { "en": "Work",    "th": "ทำงาน",     "weight": 0.15, "stayDaysRange": [90, 365],  "visaDocIfRequired": "work_visa" }
+  },
+
+  "personas": {
+    "tourism": { "en": "Tourist",               "th": "นักท่องเที่ยว" },
+    "study":   { "en": "International Student", "th": "นักศึกษาต่างชาติ" },
+    "work":    { "en": "Foreign Worker",        "th": "แรงงานต่างชาติ" }
+  },
+
+  "yellowFeverTransitCountries": [
+    { "code": "BR", "en": "Brazil",   "th": "บราซิล",   "flag": "🇧🇷" },
+    { "code": "KE", "en": "Kenya",    "th": "เคนยา",    "flag": "🇰🇪" },
+    { "code": "ET", "en": "Ethiopia", "th": "เอธิโอเปีย", "flag": "🇪🇹" }
+  ],
+  "safeTransitCountries": [
+    { "code": "AE", "en": "UAE",       "th": "สหรัฐอาหรับเอมิเรตส์", "flag": "🇦🇪" },
+    { "code": "SG", "en": "Singapore", "th": "สิงคโปร์",            "flag": "🇸🇬" },
+    { "code": "QA", "en": "Qatar",     "th": "กาตาร์",              "flag": "🇶🇦" }
+  ],
+  "routeChance": { "direct": 0.6, "safeTransit": 0.25, "yellowFeverTransit": 0.15 },
+
+  "countries": [
+    {
+      "code": "US", "flag": "🇺🇸", "en": "United States", "th": "สหรัฐอเมริกา",
+      "visaExemptTourismDays": 30, "exemptionBasis": "30-day visa exemption list",
+      "yellowFeverByNationality": false,
+      "names": ["Jake Miller", "Ashley Brooks", "Marcus Reed", "Emily Carter"]
+    },
+    {
+      "code": "GB", "flag": "🇬🇧", "en": "United Kingdom", "th": "สหราชอาณาจักร",
+      "visaExemptTourismDays": 30, "exemptionBasis": "30-day visa exemption list",
+      "yellowFeverByNationality": false,
+      "names": ["Oliver Hughes", "Charlotte Evans", "Harry Bennett", "Sophie Clarke"]
+    },
+    {
+      "code": "AU", "flag": "🇦🇺", "en": "Australia", "th": "ออสเตรเลีย",
+      "visaExemptTourismDays": 30, "exemptionBasis": "30-day visa exemption list",
+      "yellowFeverByNationality": false,
+      "names": ["Liam Walsh", "Chloe Mitchell", "Noah Fraser", "Mia Thompson"]
+    },
+    {
+      "code": "QA", "flag": "🇶🇦", "en": "Qatar", "th": "กาตาร์",
+      "visaExemptTourismDays": 30, "exemptionBasis": "30-day visa exemption list",
+      "yellowFeverByNationality": false,
+      "names": ["Khalid Al-Mansouri", "Noora Al-Thani", "Faisal Al-Kuwari", "Maryam Al-Sulaiti"]
+    },
+    {
+      "code": "NG", "flag": "🇳🇬", "en": "Nigeria", "th": "ไนจีเรีย",
+      "visaExemptTourismDays": 0, "exemptionBasis": "Not visa-exempt — visa required for all purposes",
+      "yellowFeverByNationality": true,
+      "names": ["Chinedu Okafor", "Aisha Bello", "Tunde Adeyemi", "Ngozi Eze"]
+    },
+    {
+      "code": "IN", "flag": "🇮🇳", "en": "India", "th": "อินเดีย",
+      "visaExemptTourismDays": 30, "exemptionBasis": "Added to 30-day exemption list (Cabinet, 14 Jul 2026) — no longer Visa on Arrival",
+      "yellowFeverByNationality": false,
+      "trivia": {
+        "en": "Many people still think India uses Visa on Arrival — it moved to the 30-day exemption in 2026!",
+        "th": "หลายคนยังคิดว่าอินเดียต้องใช้วีซ่า ณ ด่าน — แต่ปี 2026 เปลี่ยนเป็นยกเว้นวีซ่า 30 วันแล้ว!"
+      },
+      "names": ["Arjun Sharma", "Priya Nair", "Rohan Gupta", "Ananya Iyer"]
+    },
+    {
+      "code": "JP", "flag": "🇯🇵", "en": "Japan", "th": "ญี่ปุ่น",
+      "visaExemptTourismDays": 30, "exemptionBasis": "30-day visa exemption list",
+      "yellowFeverByNationality": false,
+      "names": ["Haruto Sato", "Yui Tanaka", "Ren Watanabe", "Sakura Ito"]
+    },
+    {
+      "code": "CN", "flag": "🇨🇳", "en": "China", "th": "จีน",
+      "visaExemptTourismDays": 30, "exemptionBasis": "Thailand–China mutual visa exemption (bilateral, since 1 Mar 2024)",
+      "yellowFeverByNationality": false,
+      "trivia": {
+        "en": "China isn't on the main 60-country list — it's visa-free through a separate bilateral agreement.",
+        "th": "จีนไม่อยู่ในรายชื่อหลัก 60 ประเทศ — แต่ได้ยกเว้นวีซ่าผ่านข้อตกลงทวิภาคีแยกต่างหาก"
+      },
+      "names": ["Wang Hao", "Li Mei", "Zhang Wei", "Chen Xin"]
+    },
+    {
+      "code": "CA", "flag": "🇨🇦", "en": "Canada", "th": "แคนาดา",
+      "visaExemptTourismDays": 30, "exemptionBasis": "30-day visa exemption list",
+      "yellowFeverByNationality": false,
+      "names": ["Ethan Tremblay", "Olivia Roy", "Lucas Gagnon", "Emma Côté"]
+    },
+    {
+      "code": "SG", "flag": "🇸🇬", "en": "Singapore", "th": "สิงคโปร์",
+      "visaExemptTourismDays": 30, "exemptionBasis": "30-day visa exemption list",
+      "yellowFeverByNationality": false,
+      "names": ["Ryan Tan", "Rachel Lim", "Daniel Goh", "Nur Aisyah"]
+    }
+  ],
+
+  "requirementLogic": {
+    "description": "Pseudo-rules the engine uses to compute required documents and necessary questions for each generated traveller.",
+    "alwaysRequired": ["passport", "tdac", "return_ticket"],
+    "passportRule": "passport.expiry must be >= gameDate + 6 months",
+    "visaRequiredWhen": [
+      "country.visaExemptTourismDays == 0",
+      "purpose != 'tourism'",
+      "purpose == 'tourism' AND stayDays > country.visaExemptTourismDays"
+    ],
+    "visaDocument": "purposes[purpose].visaDocIfRequired",
+    "visaMustMatchPurpose": true,
+    "yellowFeverRequiredWhen": [
+      "country.yellowFeverByNationality == true",
+      "route.transit is in yellowFeverTransitCountries"
+    ],
+    "approveIf": "traveller has zero flaws",
+    "necessaryQuestions": {
+      "always": ["q_purpose", "q_stay", "q_tdac", "q_ticket", "q_route"],
+      "ifVisaRequired": ["q_visa"],
+      "ifYellowFeverRequired": ["q_yellow_fever"]
+    }
+  },
+
+  "questions": [
+    {
+      "id": "q_purpose",
+      "en": "What is the purpose of your visit?",
+      "th": "คุณมาประเทศไทยเพื่อจุดประสงค์อะไร?",
+      "reveals": "purpose",
+      "answers": {
+        "default": { "en": "I'm here for {purpose}.", "th": "ฉันมาเพื่อ{purpose}" }
+      }
+    },
+    {
+      "id": "q_stay",
+      "en": "How long will you stay?",
+      "th": "คุณจะอยู่นานเท่าไหร่?",
+      "reveals": "stayDays",
+      "answers": {
+        "default": { "en": "About {stayDays} days.", "th": "ประมาณ {stayDays} วัน" }
+      }
+    },
+    {
+      "id": "q_tdac",
+      "en": "Did you complete your TDAC?",
+      "th": "คุณกรอก TDAC แล้วหรือยัง?",
+      "reveals": "tdac",
+      "answers": {
+        "default": { "en": "Yes, here it is.", "th": "กรอกแล้ว นี่ครับ/ค่ะ" },
+        "no_tdac": { "en": "Uh... what's a TDAC?", "th": "เอ่อ... TDAC คืออะไรเหรอ?" }
+      }
+    },
+    {
+      "id": "q_ticket",
+      "en": "Can I see your return or onward ticket?",
+      "th": "ขอดูตั๋วขากลับหรือตั๋วเดินทางต่อหน่อย",
+      "reveals": "return_ticket",
+      "answers": {
+        "default": { "en": "Sure, here you go.", "th": "ได้เลย นี่ครับ/ค่ะ" },
+        "no_return_ticket": { "en": "I haven't booked it yet, I'll decide later.", "th": "ยังไม่ได้จองเลย ไว้ค่อยตัดสินใจทีหลัง" }
+      }
+    },
+    {
+      "id": "q_route",
+      "en": "Where did you fly from? Any transit?",
+      "th": "คุณบินมาจากที่ไหน? แวะต่อเครื่องที่ไหนบ้าง?",
+      "reveals": "route",
+      "answers": {
+        "direct":  { "en": "Direct flight from {country}.", "th": "บินตรงมาจาก{country}" },
+        "transit": { "en": "From {country}, with a transit in {transit}.", "th": "บินจาก{country} แวะต่อเครื่องที่{transit}" }
+      }
+    },
+    {
+      "id": "q_visa",
+      "en": "Do you have a visa?",
+      "th": "คุณมีวีซ่าไหม?",
+      "reveals": "visa",
+      "answers": {
+        "default":          { "en": "Yes, here's my visa.", "th": "มีครับ/ค่ะ นี่วีซ่าของฉัน" },
+        "exempt":           { "en": "I don't need one, I'm visa-exempt.", "th": "ไม่ต้องใช้ ฉันได้รับยกเว้นวีซ่า" },
+        "no_visa":          { "en": "I thought I didn't need one...", "th": "ฉันนึกว่าไม่ต้องใช้วีซ่า..." },
+        "wrong_visa":       { "en": "Yes, I have a tourist visa.", "th": "มีครับ/ค่ะ เป็นวีซ่าท่องเที่ยว" }
+      }
+    },
+    {
+      "id": "q_yellow_fever",
+      "en": "Do you have a yellow fever vaccination certificate?",
+      "th": "คุณมีใบรับรองการฉีดวัคซีนไข้เหลืองไหม?",
+      "reveals": "yellow_fever_cert",
+      "answers": {
+        "default":         { "en": "Yes, here's my certificate.", "th": "มีครับ/ค่ะ นี่ใบรับรอง" },
+        "not_needed":      { "en": "No... do I need one?", "th": "ไม่มี... ต้องใช้ด้วยเหรอ?" },
+        "no_yellow_fever": { "en": "I didn't know I needed that.", "th": "ไม่รู้เลยว่าต้องใช้" }
+      }
+    }
+  ],
+
+  "flaws": [
+    {
+      "id": "passport_expired",
+      "denyReason": "r_passport_invalid",
+      "applicableWhen": "always",
+      "visualOnly": true,
+      "effect": "passport.expiry = gameDate - random(1..300 days)",
+      "explain": { "en": "The passport has already expired.", "th": "หนังสือเดินทางหมดอายุแล้ว" }
+    },
+    {
+      "id": "passport_under_6_months",
+      "denyReason": "r_passport_invalid",
+      "applicableWhen": "always",
+      "visualOnly": true,
+      "effect": "passport.expiry = gameDate + random(10..170 days)",
+      "explain": { "en": "The passport expires in less than 6 months.", "th": "หนังสือเดินทางเหลืออายุไม่ถึง 6 เดือน" }
+    },
+    {
+      "id": "name_mismatch",
+      "denyReason": "r_name_mismatch",
+      "applicableWhen": "always",
+      "visualOnly": true,
+      "requiresQuestionToSee": "q_tdac",
+      "effect": "tdac.name differs from passport.name by one name or spelling",
+      "explain": { "en": "The name on the TDAC doesn't match the passport.", "th": "ชื่อใน TDAC ไม่ตรงกับหนังสือเดินทาง" }
+    },
+    {
+      "id": "no_tdac",
+      "denyReason": "r_no_tdac",
+      "applicableWhen": "always",
+      "revealedBy": "q_tdac",
+      "explain": { "en": "Every foreigner must complete the TDAC before arrival.", "th": "ชาวต่างชาติทุกคนต้องกรอก TDAC ก่อนเดินทางมาถึง" }
+    },
+    {
+      "id": "no_return_ticket",
+      "denyReason": "r_no_ticket",
+      "applicableWhen": "purpose == 'tourism'",
+      "revealedBy": "q_ticket",
+      "explain": { "en": "Tourists need a return or onward ticket.", "th": "นักท่องเที่ยวต้องมีตั๋วขากลับหรือตั๋วเดินทางต่อ" }
+    },
+    {
+      "id": "no_visa",
+      "denyReason": "r_no_visa",
+      "applicableWhen": "visaRequired",
+      "revealedBy": "q_visa",
+      "explain": { "en": "This traveller needs a visa but doesn't have one.", "th": "ผู้เดินทางคนนี้ต้องมีวีซ่าแต่ไม่มี" }
+    },
+    {
+      "id": "wrong_visa",
+      "denyReason": "r_wrong_visa",
+      "applicableWhen": "purpose in ['study','work']",
+      "revealedBy": "q_visa",
+      "effect": "traveller holds tourist_visa instead of the purpose's visa",
+      "explain": { "en": "A tourist visa can't be used to study or work.", "th": "วีซ่าท่องเที่ยวใช้เรียนหรือทำงานไม่ได้" }
+    },
+    {
+      "id": "stay_exceeds_exemption",
+      "denyReason": "r_stay_too_long",
+      "applicableWhen": "purpose == 'tourism' AND country.visaExemptTourismDays > 0",
+      "revealedBy": "q_stay",
+      "effect": "stayDays = random(35..60), traveller has no visa",
+      "explain": { "en": "Visa exemption only allows 30 days. Longer stays need a visa.", "th": "การยกเว้นวีซ่าให้อยู่ได้แค่ 30 วัน ถ้าอยู่นานกว่านั้นต้องมีวีซ่า" }
+    },
+    {
+      "id": "no_yellow_fever",
+      "denyReason": "r_no_yellow_fever",
+      "applicableWhen": "yellowFeverRequired",
+      "revealedBy": "q_yellow_fever",
+      "explain": {
+        "en": "Travellers from or through yellow fever areas must show a vaccination certificate.",
+        "th": "ผู้ที่เดินทางมาจากหรือผ่านพื้นที่ไข้เหลืองต้องแสดงใบรับรองการฉีดวัคซีน"
+      }
+    }
+  ],
+
+  "denyReasons": [
+    { "id": "r_passport_invalid", "en": "Passport invalid / expiring",   "th": "หนังสือเดินทางไม่ถูกต้อง / ใกล้หมดอายุ" },
+    { "id": "r_name_mismatch",    "en": "Name doesn't match",            "th": "ชื่อไม่ตรงกัน" },
+    { "id": "r_no_tdac",          "en": "No TDAC",                       "th": "ไม่มี TDAC" },
+    { "id": "r_no_ticket",        "en": "No return ticket",              "th": "ไม่มีตั๋วขากลับ" },
+    { "id": "r_no_visa",          "en": "No visa",                       "th": "ไม่มีวีซ่า" },
+    { "id": "r_wrong_visa",       "en": "Wrong visa for purpose",        "th": "วีซ่าไม่ตรงกับจุดประสงค์" },
+    { "id": "r_stay_too_long",    "en": "Stay longer than 30 days",      "th": "อยู่นานเกิน 30 วัน" },
+    { "id": "r_no_yellow_fever",  "en": "No yellow fever certificate",   "th": "ไม่มีใบรับรองไข้เหลือง" }
+  ],
+  "denyReasonChoices": {
+    "count": 4,
+    "rule": "Always include the correct reason (if any) + 3 random others. If the traveller had no flaw, show 4 random reasons."
+  },
+
+  "consequenceHeadlines": {
+    "wrongApprove": [
+      { "en": "📰 Traveller slips through without the right documents!", "th": "📰 ผู้เดินทางหลุดผ่านด่านโดยไม่มีเอกสารครบ!" },
+      { "en": "📰 Officer under review after missed check at Suvarnabhumi!", "th": "📰 เจ้าหน้าที่ถูกตรวจสอบหลังพลาดการตรวจที่สุวรรณภูมิ!" }
+    ],
+    "wrongDeny": [
+      { "en": "📰 Valid traveller denied entry — complaint filed!", "th": "📰 ผู้เดินทางเอกสารครบถูกปฏิเสธ — ยื่นเรื่องร้องเรียนแล้ว!" },
+      { "en": "📰 Tourist misses holiday after officer's mistake!", "th": "📰 นักท่องเที่ยวพลาดวันหยุดเพราะความผิดพลาดของเจ้าหน้าที่!" }
+    ],
+    "timeout": [
+      { "en": "📰 Huge queue at immigration — officer too slow!", "th": "📰 คิวยาวเหยียดที่ด่าน — เจ้าหน้าที่ช้าเกินไป!" }
+    ]
+  },
+
+  "caseResult": {
+    "template": {
+      "en": "{verdictIcon} {verdictText}. {flawExplain} You asked {askedNecessary}/{totalNecessary} needed questions.{missedList}",
+      "th": "{verdictIcon} {verdictText} {flawExplain} คุณถามคำถามที่จำเป็น {askedNecessary}/{totalNecessary} ข้อ{missedList}"
+    },
+    "verdicts": {
+      "correct": { "icon": "✅", "en": "Correct!",   "th": "ถูกต้อง!" },
+      "wrong":   { "icon": "❌", "en": "Wrong call", "th": "ตัดสินผิด" },
+      "timeout": { "icon": "⏰", "en": "Time's up",  "th": "หมดเวลา" }
+    },
+    "missedPrefix": { "en": " Missed: ", "th": " ที่พลาดไป: " }
+  },
+
+  "ui": {
+    "landing": {
+      "title":    { "en": "BORDER CONTROL", "th": "ด่านตรวจคนเข้าเมือง" },
+      "tagline":  { "en": "Can you keep the border safe?", "th": "คุณจะรักษาด่านให้ปลอดภัยได้ไหม?" },
+      "cta":      { "en": "Become an Immigration Officer", "th": "มาเป็นเจ้าหน้าที่ตรวจคนเข้าเมือง" }
+    },
+    "nickname": {
+      "label":       { "en": "Officer name", "th": "ชื่อเจ้าหน้าที่" },
+      "placeholder": { "en": "Enter your nickname", "th": "ใส่ชื่อเล่นของคุณ" },
+      "maxLength": 16
+    },
+    "rules": {
+      "title": { "en": "Your Briefing", "th": "บรีฟก่อนเข้าเวร" },
+      "points": [
+        { "en": "You have 60 seconds per traveller.", "th": "คุณมีเวลา 60 วินาทีต่อผู้เดินทาง 1 คน" },
+        { "en": "Check the passport. Tap questions to ask the traveller — each answer takes a moment.", "th": "ตรวจหนังสือเดินทาง แตะคำถามเพื่อถามผู้เดินทาง — แต่ละคำตอบใช้เวลาเล็กน้อย" },
+        { "en": "Asking the right questions earns points. Wrong ones only waste time.", "th": "ถามคำถามที่ถูกต้องได้คะแนน ถามไม่จำเป็นแค่เสียเวลา" },
+        { "en": "Stamp APPROVED or DENIED. If you deny, choose the reason for bonus points.", "th": "ประทับตรา อนุมัติ หรือ ปฏิเสธ ถ้าปฏิเสธ เลือกเหตุผลเพื่อรับคะแนนโบนัส" },
+        { "en": "3 mistakes and you're FIRED!", "th": "พลาด 3 ครั้ง คุณโดนไล่ออก!" }
+      ],
+      "checklist": [
+        { "en": "Passport valid for 6+ months", "th": "หนังสือเดินทางเหลืออายุ 6 เดือนขึ้นไป" },
+        { "en": "TDAC completed, name matches passport", "th": "กรอก TDAC แล้ว และชื่อตรงกับหนังสือเดินทาง" },
+        { "en": "Return or onward ticket", "th": "มีตั๋วขากลับหรือตั๋วเดินทางต่อ" },
+        { "en": "Visa-exempt countries: tourism only, max 30 days", "th": "ประเทศที่ยกเว้นวีซ่า: ท่องเที่ยวเท่านั้น ไม่เกิน 30 วัน" },
+        { "en": "Study needs ED visa · Work needs Non-B visa", "th": "เรียนต้องใช้วีซ่า ED · ทำงานต้องใช้วีซ่า Non-B" },
+        { "en": "Nigeria: visa required for all visits", "th": "ไนจีเรีย: ต้องมีวีซ่าทุกกรณี" },
+        { "en": "Yellow fever certificate if from or via: Nigeria, Brazil, Kenya, Ethiopia", "th": "ต้องมีใบรับรองไข้เหลืองถ้ามาจากหรือผ่าน: ไนจีเรีย บราซิล เคนยา เอธิโอเปีย" }
+      ],
+      "start": { "en": "Start Shift", "th": "เริ่มเข้าเวร" }
+    },
+    "game": {
+      "approve": { "en": "APPROVED", "th": "อนุมัติ" },
+      "deny":    { "en": "DENIED",   "th": "ปฏิเสธ" },
+      "chooseReason": { "en": "Why are you denying entry?", "th": "ทำไมคุณถึงปฏิเสธการเข้าเมือง?" },
+      "strikes": { "en": "Strikes", "th": "ความผิดพลาด" },
+      "next":    { "en": "Next traveller", "th": "ผู้เดินทางคนถัดไป" }
+    },
+    "end": {
+      "fired":     { "en": "YOU'RE FIRED!", "th": "คุณโดนไล่ออก!" },
+      "complete":  { "en": "SHIFT COMPLETE", "th": "จบเวรแล้ว!" },
+      "playAgain": { "en": "Play again", "th": "เล่นอีกครั้ง" },
+      "leaderboard": { "en": "Leaderboard", "th": "ตารางคะแนน" },
+      "nitifyCta": {
+        "en": "Real foreigners in Thailand deal with these rules every day. Nitify helps them get it right.",
+        "th": "ชาวต่างชาติในไทยต้องเจอกฎเหล่านี้ทุกวัน Nitify ช่วยให้พวกเขาทำได้ถูกต้อง"
+      }
+    }
+  }
+}
