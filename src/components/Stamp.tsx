@@ -33,7 +33,7 @@ const DROPS = Array.from({ length: 14 }, (_, i) => {
 })
 
 /** Ink droplets bursting out from the impact point. */
-function InkSplash({ color }: { color: string }) {
+export function InkSplash({ color }: { color: string }) {
   const drops = DROPS
   return (
     <div className="pointer-events-none absolute top-1/2 left-1/2">
