@@ -1,17 +1,14 @@
-import { AnimatePresence, motion } from 'framer-motion'
-import { getQuestion, rules } from '../engine/rules'
-import type { Traveller } from '../engine/types'
-import { useText } from '../i18n/useText'
-import { useGameStore } from '../store/gameStore'
+import { motion } from 'framer-motion'
+import type { ReactNode } from 'react'
 
-function TypingDots() {
+export function TypingDots() {
   return (
-    <span className="flex gap-1.5 py-2">
+    <span className="flex gap-1.5 py-1.5">
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
-          className="size-3 rounded-full bg-muted"
-          animate={{ y: [0, -5, 0], opacity: [0.4, 1, 0.4] }}
+          className="size-2.5 rounded-full bg-muted"
+          animate={{ y: [0, -4, 0], opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
         />
       ))}
@@ -19,39 +16,27 @@ function TypingDots() {
   )
 }
 
-/** The traveller's reply: typing dots while answering, then the answer text. */
-export default function SpeechBubble({ traveller }: { traveller: Traveller }) {
-  const { t } = useText()
-  const phase = useGameStore((s) => s.phase)
-  const answeringId = useGameStore((s) => s.answeringId)
-  const lastAnsweredId = useGameStore((s) => s.lastAnsweredId)
-
-  const questionId = answeringId ?? lastAnsweredId
-  const visible = phase !== 'entering' && questionId !== null
-  const answer = lastAnsweredId ? traveller.answers[lastAnsweredId] : null
-
+/**
+ * One chat message in the interview log, messaging-app style:
+ * officer on the right (navy), traveller on the left (grey).
+ */
+export default function SpeechBubble({ from, children, highlight = false }: { from: 'officer' | 'traveller'; children: ReactNode; highlight?: boolean }) {
+  const officer = from === 'officer'
   return (
-    <AnimatePresence mode="wait">
-      {visible && (
-        <motion.div
-          key={`${traveller.id}-${questionId}`}
-          initial={{ opacity: 0, scale: 0.9, y: 8 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.12 } }}
-          transition={{ duration: 0.2, ease: 'easeOut' }}
-          className="relative w-[min(24rem,42vw)] origin-bottom-left rounded-2xl rounded-bl-md bg-white px-5 py-4 shadow-lift"
-          aria-live="polite"
-        >
-          <div className="mb-1 text-sm font-medium text-muted">{questionId && t(getQuestion(questionId))}</div>
-          {answeringId ? (
-            <span aria-label={t(rules.ui.game.answering)}>
-              <TypingDots />
-            </span>
-          ) : (
-            answer && <p className="text-xl leading-snug font-semibold text-ink sm:text-2xl">{t(answer.text)}</p>
-          )}
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <motion.div
+      layout="position"
+      initial={{ opacity: 0, y: 8, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.18, ease: 'easeOut' }}
+      className={`flex ${officer ? 'justify-end' : 'justify-start'}`}
+    >
+      <div
+        className={`max-w-[85%] rounded-2xl px-4 py-2.5 leading-snug break-words transition-shadow ${
+          officer ? 'rounded-br-md bg-brand text-base text-white' : 'rounded-bl-md bg-canvas text-lg font-medium text-ink'
+        } ${highlight ? 'ring-2 ring-brand/40' : ''}`}
+      >
+        {children}
+      </div>
+    </motion.div>
   )
 }

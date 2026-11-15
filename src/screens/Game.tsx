@@ -2,25 +2,23 @@ import { AnimatePresence, motion, useAnimate } from 'framer-motion'
 import { useState } from 'react'
 import CaseResult from '../components/CaseResult'
 import Counter from '../components/Counter'
-import Countdown from '../components/Countdown'
-import MuteToggle from '../components/MuteToggle'
-import DenyReasonPicker from '../components/DenyReasonPicker'
-import DocumentCard from '../components/DocumentCard'
-import { StampSlam } from '../components/Stamp'
 import DebugOverlay from '../components/DebugOverlay'
+import DenyReasonPicker from '../components/DenyReasonPicker'
 import Desk from '../components/Desk'
-import QuestionChips from '../components/QuestionChips'
-import SpeechBubble from '../components/SpeechBubble'
-import Traveller from '../components/Traveller'
+import DocumentCard from '../components/DocumentCard'
+import GameScene from '../components/GameScene'
+import InterviewPanel from '../components/InterviewPanel'
 import LanguageToggle from '../components/LanguageToggle'
+import MuteToggle from '../components/MuteToggle'
 import Rulebook from '../components/Rulebook'
+import { StampSlam } from '../components/Stamp'
 import Strikes from '../components/Strikes'
 import Timer from '../components/Timer'
 import { rules } from '../engine/rules'
 import { streakMultiplier } from '../engine/scoring'
-import { useText } from '../i18n/useText'
 import type { Traveller as TravellerData } from '../engine/types'
-import { selectAllNeededAsked, selectTraveller, useGameStore } from '../store/gameStore'
+import { useText } from '../i18n/useText'
+import { selectTraveller, useGameStore } from '../store/gameStore'
 import { playSfx } from '../store/soundStore'
 import { playThunk } from '../utils/sound'
 
@@ -35,79 +33,32 @@ function TopBar({ onOpenRulebook }: { onOpenRulebook: () => void }) {
   const multiplier = streakMultiplier(streak + 1)
 
   return (
-    <header className="relative z-20 flex flex-wrap items-center gap-x-5 gap-y-2 bg-white px-4 py-3 shadow-soft sm:px-6">
-      <span className="rounded-full bg-brand-50 px-4 py-1.5 text-base font-semibold whitespace-nowrap text-brand">
+    <header className="relative z-30 flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2 bg-white px-4 py-2.5 shadow-soft sm:px-5">
+      <span className="hidden text-lg font-extrabold tracking-tight whitespace-nowrap text-ink lg:inline">
+        {t(rules.ui.landing.logo)
+          .split(/(\d+)/)
+          .map((part, i) => (/\d/.test(part) ? <span key={i} className="text-brand">{part}</span> : part))}
+      </span>
+      <span className="rounded-full bg-brand-50 px-3.5 py-1.5 text-base font-semibold whitespace-nowrap text-brand">
         {t(ui.travellerCount, { n: index + 1, total })}
       </span>
       <Timer />
       <Strikes />
       <div className="flex items-baseline gap-2">
-        <span className="text-sm font-semibold text-muted">{t(ui.score)}</span>
+        <span className="hidden text-sm font-semibold text-muted md:inline">{t(ui.score)}</span>
         <span className="text-3xl font-extrabold text-ink tabular-nums">{score}</span>
-        {multiplier > 1 && (
-          <span className="rounded-full bg-brand-50 px-2.5 py-0.5 text-sm font-bold text-brand">
-            🔥 {t(ui.streak, { multiplier })}
-          </span>
-        )}
+        {multiplier > 1 && <span className="rounded-full bg-brand-50 px-2.5 py-0.5 text-sm font-bold text-brand">🔥 {t(ui.streak, { multiplier })}</span>}
       </div>
       <button
         onClick={onOpenRulebook}
-        className="h-12 rounded-full bg-canvas px-4 text-base font-semibold text-ink hover:bg-line xl:hidden"
+        aria-label={t(ui.rulebook)}
+        className="h-12 rounded-full bg-canvas px-4 text-base font-semibold whitespace-nowrap text-ink hover:bg-line"
       >
-        📘 {t(ui.rulebook)}
+        📘 <span className="hidden md:inline">{t(ui.rulebook)}</span>
       </button>
       <MuteToggle />
       <LanguageToggle />
     </header>
-  )
-}
-
-/** Bright airport hall behind the traveller. */
-function Backdrop() {
-  return (
-    <div aria-hidden className="absolute inset-0 overflow-hidden bg-[linear-gradient(180deg,#e8edf7_0%,#f7f8fa_70%)]">
-      {/* Big window onto the apron */}
-      <div className="absolute inset-x-[6%] top-[14%] h-[40%] overflow-hidden rounded-3xl bg-[linear-gradient(180deg,#cfe0ff,#eef4ff)]">
-        <div className="absolute bottom-0 h-[22%] w-full bg-white/60" />
-        <div className="absolute inset-y-0 left-1/3 w-1.5 bg-white/70" />
-        <div className="absolute inset-y-0 left-2/3 w-1.5 bg-white/70" />
-        <div className="absolute top-[28%] left-[12%] h-6 w-24 rounded-full bg-white/80" />
-        <div className="absolute top-[18%] right-[14%] h-5 w-16 rounded-full bg-white/70" />
-      </div>
-    </div>
-  )
-}
-
-function DecisionButtons() {
-  const { t } = useText()
-  const enabled = useGameStore((s) => s.phase === 'inspecting' && s.answeringId === null)
-  const decide = useGameStore((s) => s.decide)
-  const openDenyPicker = useGameStore((s) => s.openDenyPicker)
-  // Next step hint: once every needed question is asked, it's time to stamp.
-  const hint = useGameStore(selectAllNeededAsked) && enabled
-  const base = `min-h-16 w-40 rounded-2xl text-xl font-extrabold tracking-wide uppercase text-white shadow-soft transition-opacity disabled:cursor-not-allowed disabled:opacity-35 sm:w-48 sm:text-2xl ${
-    hint ? 'animate-hint' : ''
-  }`
-
-  return (
-    <div className="flex shrink-0 flex-col gap-3">
-      <motion.button
-        whileTap={enabled ? { scale: 0.94 } : undefined}
-        disabled={!enabled}
-        onClick={() => decide('APPROVE')}
-        className={`${base} bg-approve [--hint:#16a34a]`}
-      >
-        ✔ {t(ui.approve)}
-      </motion.button>
-      <motion.button
-        whileTap={enabled ? { scale: 0.94 } : undefined}
-        disabled={!enabled}
-        onClick={openDenyPicker}
-        className={`${base} bg-deny [--hint:#dc2626]`}
-      >
-        ✖ {t(ui.deny)}
-      </motion.button>
-    </div>
   )
 }
 
@@ -142,13 +93,17 @@ function StampOverlay({ traveller, onImpact }: { traveller: TravellerData; onImp
   )
 }
 
+/**
+ * Layout:
+ * - ≥1024px: booth window + desk on the left (~65%), interview panel on the right (~35%).
+ * - <1024px: window, desk, then the interview panel (page scrolls); decision buttons pinned to the bottom.
+ */
 export default function Game() {
   const { t, date } = useText()
   const [rulebookOpen, setRulebookOpen] = useState(false)
   const phase = useGameStore((s) => s.phase)
   const traveller = useGameStore(selectTraveller)
   const lastResult = useGameStore((s) => s.lastResult)
-  const travellerArrived = useGameStore((s) => s.travellerArrived)
   const [scope, animate] = useAnimate()
 
   const onStampImpact = () => {
@@ -161,73 +116,51 @@ export default function Game() {
   return (
     // Outer box clips the screen shake so no scrollbars flash during the stamp.
     <div className="h-dvh overflow-hidden bg-canvas">
-    <div ref={scope} className="flex h-full flex-col">
-      <TopBar onOpenRulebook={() => setRulebookOpen(true)} />
+      <div ref={scope} className="flex h-full flex-col">
+        <TopBar onOpenRulebook={() => setRulebookOpen(true)} />
 
-      <div className="flex min-h-0 flex-1">
-        <main className="relative flex min-w-0 flex-1 flex-col">
-          {/* Traveller area */}
-          <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
-            <Backdrop />
-            <Countdown />
-            {/* Airport sign in its own row, so it never overlaps the traveller or the tag */}
-            <div className="relative z-10 flex shrink-0 justify-center pt-3">
-              <span className="rounded-full bg-white px-4 py-1 text-xs font-extrabold tracking-[0.25em] whitespace-nowrap text-brand shadow-soft">
-                {t(rules.ui.landing.logo)}
-              </span>
+        <main className="relative flex min-h-0 flex-1 flex-col overflow-y-auto pb-24 lg:flex-row lg:overflow-hidden lg:pb-0">
+          {/* Left: the booth window and the desk */}
+          <div className="flex shrink-0 flex-col lg:min-h-0 lg:w-[65%] lg:shrink">
+            <div className="flex h-[42dvh] min-h-72 flex-col lg:h-auto lg:min-h-0 lg:flex-1 [&>section]:flex-1">
+              <GameScene traveller={traveller} />
             </div>
-            <div className="relative min-h-0 flex-1 pt-3">
-              <AnimatePresence mode="wait">
-                <Traveller
-                  key={traveller.id}
-                  traveller={traveller}
-                  walking={phase === 'entering'}
-                  onArrived={travellerArrived}
-                />
-              </AnimatePresence>
-              <div className="absolute top-[36%] left-[calc(50%+4.5rem)] z-10">
-                <SpeechBubble traveller={traveller} />
+            <Counter>
+              <div className="flex items-end gap-4">
+                <Desk key={traveller.id} traveller={traveller} />
+                <span className="mb-1 shrink-0 rounded-full bg-white/90 px-3.5 py-1.5 text-sm font-semibold whitespace-nowrap text-ink shadow-soft">
+                  📅 {t(ui.today, { date: date(traveller.gameDate) })}
+                </span>
               </div>
-            </div>
-            <QuestionChips />
-          </section>
+            </Counter>
+          </div>
 
-          {/* Officer's counter */}
-          <Counter>
-            <div className="mb-2 flex justify-end">
-              <span className="rounded-full bg-canvas px-4 py-1.5 text-base font-semibold text-ink">
-                📅 {t(ui.today, { date: date(traveller.gameDate) })}
-              </span>
-            </div>
-            <div className="flex items-end gap-5">
-              <Desk key={traveller.id} traveller={traveller} />
-              <DecisionButtons />
-            </div>
-          </Counter>
-
-          {/* Case result over the play area once the round is scored */}
-          <AnimatePresence>
-            {phase === 'result' && lastResult && (
-              <motion.div
-                key={`result-${traveller.id}`}
-                className="absolute inset-0 z-30 flex flex-col items-center justify-center-safe overflow-y-auto bg-canvas/70 p-4 backdrop-blur-sm"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <CaseResult traveller={traveller} result={lastResult} />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Right: the interview */}
+          <div className="flex shrink-0 flex-col lg:min-h-0 lg:w-[35%] lg:shrink">
+            <InterviewPanel traveller={traveller} />
+          </div>
         </main>
 
-        <Rulebook open={rulebookOpen} onClose={() => setRulebookOpen(false)} />
-      </div>
+        {/* Case result over the play area once the round is scored */}
+        <AnimatePresence>
+          {phase === 'result' && lastResult && (
+            <motion.div
+              key={`result-${traveller.id}`}
+              className="fixed inset-0 z-[25] flex flex-col items-center justify-center-safe overflow-y-auto bg-canvas/75 p-4 pt-20 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <CaseResult traveller={traveller} result={lastResult} />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      <DenyReasonPicker traveller={traveller} />
-      <StampOverlay traveller={traveller} onImpact={onStampImpact} />
-      <DebugOverlay />
-    </div>
+        <Rulebook open={rulebookOpen} onClose={() => setRulebookOpen(false)} />
+        <DenyReasonPicker traveller={traveller} />
+        <StampOverlay traveller={traveller} onImpact={onStampImpact} />
+        <DebugOverlay />
+      </div>
     </div>
   )
 }

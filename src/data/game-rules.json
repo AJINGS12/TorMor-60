@@ -189,6 +189,9 @@
       "id": "q_purpose",
       "en": "What is the purpose of your visit?",
       "th": "คุณมาประเทศไทยเพื่อจุดประสงค์อะไร?",
+      "shortEn": "Purpose",
+      "shortTh": "จุดประสงค์",
+      "icon": "🎯",
       "reveals": "purpose",
       "answers": {
         "default": { "en": "I'm here for {purpose}.", "th": "ฉันมาเพื่อ{purpose}" }
@@ -198,6 +201,9 @@
       "id": "q_stay",
       "en": "How long will you stay?",
       "th": "คุณจะอยู่นานเท่าไหร่?",
+      "shortEn": "Length of stay",
+      "shortTh": "ระยะเวลาพำนัก",
+      "icon": "⏱",
       "reveals": "stayDays",
       "answers": {
         "default": { "en": "About {stayDays} days.", "th": "ประมาณ {stayDays} วัน" }
@@ -207,6 +213,9 @@
       "id": "q_tdac",
       "en": "Did you complete your TDAC?",
       "th": "คุณกรอก TDAC แล้วหรือยัง?",
+      "shortEn": "TDAC",
+      "shortTh": "TDAC",
+      "icon": "📱",
       "reveals": "tdac",
       "answers": {
         "default": { "en": "Yes, here it is.", "th": "กรอกแล้ว นี่ครับ/ค่ะ" },
@@ -217,6 +226,9 @@
       "id": "q_ticket",
       "en": "Can I see your return or onward ticket?",
       "th": "ขอดูตั๋วขากลับหรือตั๋วเดินทางต่อหน่อย",
+      "shortEn": "Return ticket",
+      "shortTh": "ตั๋วขากลับ",
+      "icon": "🎫",
       "reveals": "return_ticket",
       "answers": {
         "default": { "en": "Sure, here you go.", "th": "ได้เลย นี่ครับ/ค่ะ" },
@@ -227,6 +239,9 @@
       "id": "q_route",
       "en": "Where did you fly from? Any transit?",
       "th": "คุณบินมาจากที่ไหน? แวะต่อเครื่องที่ไหนบ้าง?",
+      "shortEn": "Route & transit",
+      "shortTh": "เส้นทางบิน",
+      "icon": "✈️",
       "reveals": "route",
       "answers": {
         "direct":  { "en": "Direct flight from {country}.", "th": "บินตรงมาจาก{country}" },
@@ -237,6 +252,9 @@
       "id": "q_visa",
       "en": "Do you have a visa?",
       "th": "คุณมีวีซ่าไหม?",
+      "shortEn": "Visa",
+      "shortTh": "วีซ่า",
+      "icon": "🛂",
       "reveals": "visa",
       "answers": {
         "default":          { "en": "Yes, here's my visa.", "th": "มีครับ/ค่ะ นี่วีซ่าของฉัน" },
@@ -249,6 +267,9 @@
       "id": "q_yellow_fever",
       "en": "Do you have a yellow fever vaccination certificate?",
       "th": "คุณมีใบรับรองการฉีดวัคซีนไข้เหลืองไหม?",
+      "shortEn": "Yellow fever",
+      "shortTh": "ไข้เหลือง",
+      "icon": "💉",
       "reveals": "yellow_fever_cert",
       "answers": {
         "default":         { "en": "Yes, here's my certificate.", "th": "มีครับ/ค่ะ นี่ใบรับรอง" },
@@ -260,6 +281,9 @@
       "id": "q_study_docs",
       "en": "Do you have any documents for your studies?",
       "th": "คุณมีเอกสารยืนยันการศึกษาไหม?",
+      "shortEn": "Study documents",
+      "shortTh": "เอกสารการศึกษา",
+      "icon": "🏫",
       "reveals": "school_letter",
       "showWhen": "purpose == 'study'",
       "answers": {
@@ -466,6 +490,9 @@
       "today":   { "en": "Today: {date}", "th": "วันนี้: {date}" },
       "rulebook": { "en": "Rulebook", "th": "คู่มือกฎ" },
       "askQuestion": { "en": "Ask the traveller", "th": "ถามผู้เดินทาง" },
+      "interview": { "en": "Interview", "th": "สัมภาษณ์" },
+      "chatEmpty": { "en": "Tap a question below to start the interview.", "th": "แตะคำถามด้านล่างเพื่อเริ่มสัมภาษณ์" },
+      "arrivalsSign": { "en": "ARRIVALS · ขาเข้า", "th": "ARRIVALS · ขาเข้า" },
       "answering": { "en": "Traveller is answering…", "th": "ผู้เดินทางกำลังตอบ…" },
       "desk":    { "en": "Your desk", "th": "โต๊ะของคุณ" },
       "tapToZoom": { "en": "Tap a document to inspect it", "th": "แตะเอกสารเพื่อตรวจดู" },

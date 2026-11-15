@@ -1,9 +1,15 @@
 import type { ReactNode } from 'react'
 
-/** The officer's desk at the bottom of the booth. */
+/** The officer's desk: a light wood surface the documents sit on. */
 export default function Counter({ children }: { children: ReactNode }) {
   return (
-    <section className="relative z-10 shrink-0 rounded-t-3xl bg-white px-4 pt-4 pb-5 shadow-[0_-8px_30px_rgb(17_24_39/0.07)] sm:px-6">
+    <section
+      className="relative z-10 shrink-0 px-4 pt-3 pb-4 shadow-[inset_0_3px_0_rgb(255_255_255/0.55),0_-6px_20px_rgb(17_24_39/0.08)] sm:px-5"
+      style={{
+        background:
+          'repeating-linear-gradient(90deg, rgb(120 80 30 / 0.035) 0 2px, transparent 2px 11px), linear-gradient(180deg, #ecdcc3 0%, #dfc8a6 100%)',
+      }}
+    >
       {children}
     </section>
   )

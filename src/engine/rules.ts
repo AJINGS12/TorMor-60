@@ -106,6 +106,7 @@ function validate() {
   }
   for (const c of countries) check(c.names.length > 0, `country ${c.code} has no names`)
   check(data.universities.length > 0, 'universities list is empty')
+  for (const q of questions) check(!!(q.shortEn && q.shortTh && q.icon), `question ${q.id} needs shortEn, shortTh and icon`)
   const showWhens = questions.flatMap((q) => (q.showWhen ? [q.showWhen] : []))
   for (const cond of [...logic.visaRequiredWhen, ...logic.yellowFeverRequiredWhen, ...flaws.map((f) => f.applicableWhen), ...showWhens]) {
     try {

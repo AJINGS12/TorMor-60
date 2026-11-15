@@ -11,7 +11,7 @@ export default function Timer() {
   const fraction = secondsLeft / TOTAL
 
   return (
-    <div className="flex min-w-0 flex-1 items-center gap-3" role="timer" aria-live="off">
+    <div className="flex min-w-36 flex-1 items-center gap-3" role="timer" aria-live="off">
       <div className="relative h-3 flex-1 overflow-hidden rounded-full bg-line">
         <div
           className={`absolute inset-y-0 left-0 rounded-full transition-colors duration-300 ${warning ? 'bg-deny' : 'bg-brand'}`}

@@ -163,16 +163,21 @@ export function DocumentThumb({ traveller, doc, hint }: { traveller: Traveller; 
   const style = STYLE[doc.docId]
   const name = doc.slot === 'passport' ? traveller.documents.passport.name : traveller.documents[doc.slot]?.name
   return (
-    <div className={`flex h-full w-full flex-col overflow-hidden rounded-xl bg-white text-left shadow-soft ${hint ? 'animate-hint-glow' : ''}`}>
-      <div className="flex items-center gap-1.5 px-3 py-1.5 text-xs leading-tight font-bold text-white" style={{ background: style.strip }}>
-        <span className="text-base">{style.icon}</span>
-        <span className="line-clamp-1">{t(rules.documents[doc.docId])}</span>
-      </div>
-      <div className="flex flex-1 flex-col justify-end gap-1 px-3 pb-2.5">
-        {hint && (
-          <span className="self-start rounded-full bg-brand px-2 py-0.5 text-[11px] leading-tight font-semibold text-white">👆 {hint}</span>
-        )}
-        <span className="truncate text-sm font-semibold text-ink">{name}</span>
+    <div className="relative h-full w-full">
+      {/* "Tap me" hint floats above the card so it never squeezes the card content */}
+      {hint && (
+        <span className="absolute -top-3 left-2 z-10 rounded-full bg-brand px-2.5 py-0.5 text-[11px] leading-snug font-semibold whitespace-nowrap text-white shadow-soft">
+          👆 {hint}
+        </span>
+      )}
+      <div className={`flex h-full w-full flex-col overflow-hidden rounded-xl bg-white text-left shadow-soft ${hint ? 'animate-hint-glow' : ''}`}>
+        <div className="flex min-h-11 items-center gap-1.5 px-2.5 py-1.5 text-[11px] leading-tight font-bold text-white" style={{ background: style.strip }}>
+          <span className="shrink-0 text-base">{style.icon}</span>
+          <span>{t(rules.documents[doc.docId])}</span>
+        </div>
+        <div className="flex flex-1 items-end px-3 pb-2.5">
+          <span className="text-sm leading-tight font-semibold break-words text-ink">{name}</span>
+        </div>
       </div>
     </div>
   )

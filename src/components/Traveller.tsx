@@ -15,10 +15,13 @@ const walk: Variants = {
 export default function Traveller({
   traveller,
   walking,
+  talking = false,
   onArrived,
 }: {
   traveller: TravellerData
   walking: boolean
+  /** Small quick bob while the traveller is answering a question. */
+  talking?: boolean
   onArrived: () => void
 }) {
   const { t } = useText()
@@ -43,8 +46,14 @@ export default function Traveller({
       </div>
 
       <motion.div
-        animate={isWalking ? { y: [0, -8, 0], rotate: [-2, 2, -2] } : { y: [0, -2, 0], rotate: 0 }}
-        transition={{ duration: isWalking ? 0.45 : 3, repeat: Infinity, ease: 'easeInOut' }}
+        animate={
+          isWalking
+            ? { y: [0, -8, 0], rotate: [-2, 2, -2] }
+            : talking
+              ? { y: [0, -5, 0, -3, 0], rotate: [0, -1.5, 0, 1.5, 0] }
+              : { y: [0, -2, 0], rotate: 0 }
+        }
+        transition={{ duration: isWalking ? 0.45 : talking ? 0.6 : 3, repeat: Infinity, ease: 'easeInOut' }}
         // Avatar takes whatever height is left (up to 300px) and shrinks on short screens.
         className="flex min-h-0 max-h-[300px] w-full flex-1 justify-center"
       >

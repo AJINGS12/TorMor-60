@@ -10,7 +10,7 @@ export default function Strikes() {
 
   return (
     <div className="flex items-center gap-2" aria-label={`${label}: ${strikes}/${config.strikesToFail}`}>
-      <span className="hidden text-sm font-semibold text-muted sm:inline">{label}</span>
+      <span className="hidden text-sm font-semibold text-muted md:inline">{label}</span>
       {Array.from({ length: config.strikesToFail }, (_, i) => {
         const hit = i < strikes
         return (

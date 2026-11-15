@@ -34,10 +34,10 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
 
   return (
     <div className="min-w-0 flex-1">
-      <div className="mb-2 text-sm font-semibold text-muted">
+      <div className="mb-4 text-sm font-semibold text-ink/60">
         {t(ui.desk)} · <span className="font-normal">{t(ui.tapToZoom)}</span>
       </div>
-      <div className="-my-3 flex min-h-28 gap-3 overflow-x-auto overflow-y-hidden py-3">
+      <div className="-my-3 flex min-h-28 gap-3 overflow-x-auto overflow-y-hidden py-3 [scrollbar-width:thin]">
         <AnimatePresence>
           {docs.map((doc, i) => (
             <motion.button
