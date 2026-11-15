@@ -33,8 +33,10 @@ interface GameState {
   askedQuestionIds: QuestionId[]
   /** Question the traveller is currently answering (chips disabled meanwhile). */
   answeringId: QuestionId | null
-  /** Most recently answered question, shown in the speech bubble. */
+  /** Most recently answered (or re-shown) question; highlighted in the chat log. */
   lastAnsweredId: QuestionId | null
+  /** Bumped each time an already-asked question is tapped, to scroll the chat back to it. */
+  reviewCount: number
   results: RoundResult[]
   lastResult: RoundResult | null
   headline: LocalizedText | null
@@ -74,6 +76,7 @@ const roundReset = {
   askedQuestionIds: [],
   answeringId: null,
   lastAnsweredId: null,
+  reviewCount: 0,
   lastResult: null,
   headline: null,
 } satisfies Partial<GameState>
@@ -177,9 +180,9 @@ export const useGameStore = create<GameState>()((set, get) => {
     askQuestion: (id) => {
       const s = get()
       if (s.phase !== 'inspecting' || s.answeringId) return
-      // Re-asking just shows the earlier answer again, instantly.
+      // Re-asking just re-shows the earlier answer in the chat, instantly.
       if (s.askedQuestionIds.includes(id)) {
-        set({ lastAnsweredId: id })
+        set({ lastAnsweredId: id, reviewCount: s.reviewCount + 1 })
         return
       }
       set({ answeringId: id })

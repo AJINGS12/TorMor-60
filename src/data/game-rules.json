@@ -189,8 +189,6 @@
       "id": "q_purpose",
       "en": "What is the purpose of your visit?",
       "th": "คุณมาประเทศไทยเพื่อจุดประสงค์อะไร?",
-      "shortEn": "Purpose",
-      "shortTh": "จุดประสงค์",
       "icon": "🎯",
       "reveals": "purpose",
       "answers": {
@@ -201,8 +199,6 @@
       "id": "q_stay",
       "en": "How long will you stay?",
       "th": "คุณจะอยู่นานเท่าไหร่?",
-      "shortEn": "Length of stay",
-      "shortTh": "ระยะเวลาพำนัก",
       "icon": "⏱",
       "reveals": "stayDays",
       "answers": {
@@ -213,8 +209,6 @@
       "id": "q_tdac",
       "en": "Did you complete your TDAC?",
       "th": "คุณกรอก TDAC แล้วหรือยัง?",
-      "shortEn": "TDAC",
-      "shortTh": "TDAC",
       "icon": "📱",
       "reveals": "tdac",
       "answers": {
@@ -226,8 +220,6 @@
       "id": "q_ticket",
       "en": "Can I see your return or onward ticket?",
       "th": "ขอดูตั๋วขากลับหรือตั๋วเดินทางต่อหน่อย",
-      "shortEn": "Return ticket",
-      "shortTh": "ตั๋วขากลับ",
       "icon": "🎫",
       "reveals": "return_ticket",
       "answers": {
@@ -239,8 +231,6 @@
       "id": "q_route",
       "en": "Where did you fly from? Any transit?",
       "th": "คุณบินมาจากที่ไหน? แวะต่อเครื่องที่ไหนบ้าง?",
-      "shortEn": "Route & transit",
-      "shortTh": "เส้นทางบิน",
       "icon": "✈️",
       "reveals": "route",
       "answers": {
@@ -252,8 +242,6 @@
       "id": "q_visa",
       "en": "Do you have a visa?",
       "th": "คุณมีวีซ่าไหม?",
-      "shortEn": "Visa",
-      "shortTh": "วีซ่า",
       "icon": "🛂",
       "reveals": "visa",
       "answers": {
@@ -267,8 +255,6 @@
       "id": "q_yellow_fever",
       "en": "Do you have a yellow fever vaccination certificate?",
       "th": "คุณมีใบรับรองการฉีดวัคซีนไข้เหลืองไหม?",
-      "shortEn": "Yellow fever",
-      "shortTh": "ไข้เหลือง",
       "icon": "💉",
       "reveals": "yellow_fever_cert",
       "answers": {
@@ -281,8 +267,6 @@
       "id": "q_study_docs",
       "en": "Do you have any documents for your studies?",
       "th": "คุณมีเอกสารยืนยันการศึกษาไหม?",
-      "shortEn": "Study documents",
-      "shortTh": "เอกสารการศึกษา",
       "icon": "🏫",
       "reveals": "school_letter",
       "showWhen": "purpose == 'study'",

@@ -16,6 +16,7 @@ function ChatLog({ traveller }: { traveller: Traveller }) {
   const asked = useGameStore((s) => s.askedQuestionIds)
   const answeringId = useGameStore((s) => s.answeringId)
   const lastAnsweredId = useGameStore((s) => s.lastAnsweredId)
+  const reviewCount = useGameStore((s) => s.reviewCount)
   const scroller = useRef<HTMLDivElement>(null)
 
   // Follow the conversation as it grows.
@@ -23,6 +24,12 @@ function ChatLog({ traveller }: { traveller: Traveller }) {
     const el = scroller.current
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
   }, [asked.length, answeringId])
+
+  // Tapping an already-asked question scrolls back to (and highlights) its answer.
+  useEffect(() => {
+    if (!reviewCount || !lastAnsweredId) return
+    scroller.current?.querySelector(`[data-answer="${lastAnsweredId}"]`)?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+  }, [reviewCount, lastAnsweredId])
 
   return (
     <div
@@ -39,7 +46,7 @@ function ChatLog({ traveller }: { traveller: Traveller }) {
           <SpeechBubble key={`${id}-q`} from="officer">
             {t(getQuestion(id))}
           </SpeechBubble>,
-          <SpeechBubble key={`${id}-a`} from="traveller" highlight={id === lastAnsweredId}>
+          <SpeechBubble key={`${id}-a`} from="traveller" answerOf={id} highlight={id === lastAnsweredId}>
             {t(traveller.answers[id].text)}
           </SpeechBubble>,
         ])}
@@ -67,13 +74,16 @@ export default function InterviewPanel({ traveller }: { traveller: Traveller }) 
   return (
     <section className="flex shrink-0 flex-col bg-white lg:min-h-0 lg:flex-1 lg:shrink lg:shadow-[-8px_0_30px_rgb(17_24_39/0.06)]">
       <h2 className="shrink-0 px-4 pt-3 text-sm font-semibold text-muted">💬 {t(ui.interview)}</h2>
-      {/* Chat gets a fixed height when stacked (page scrolls), and all spare height side-by-side. */}
-      <div className="flex h-64 shrink-0 flex-col lg:h-auto lg:min-h-0 lg:flex-1 lg:shrink">
+      {/* Chat gets a fixed height when stacked (page scrolls), and the spare height side-by-side. */}
+      <div className="flex h-64 shrink-0 flex-col lg:h-auto lg:min-h-36 lg:flex-1 lg:basis-0">
         <ChatLog key={traveller.id} traveller={traveller} />
       </div>
-      <div className="shrink-0 border-t border-line px-3 pt-3 pb-3">
-        <div className="mb-1.5 px-1 text-sm font-semibold text-muted">{t(ui.askQuestion)}</div>
-        <QuestionChips />
+      {/* Side-by-side: if the questions don't fit, only this list scrolls. */}
+      <div className="flex shrink-0 flex-col border-t border-line lg:max-h-[58%] lg:min-h-0 lg:shrink">
+        <div className="shrink-0 px-4 pt-3 pb-1.5 text-sm font-semibold text-muted">{t(ui.askQuestion)}</div>
+        <div className="min-h-0 overflow-y-auto px-3 pt-0.5 pb-3 [scrollbar-width:thin]">
+          <QuestionChips />
+        </div>
       </div>
       <div className="fixed inset-x-0 bottom-0 z-20 shrink-0 bg-white/95 px-3 pt-2 pb-3 shadow-[0_-8px_24px_rgb(17_24_39/0.08)] backdrop-blur lg:static lg:bg-white lg:shadow-none">
         <DecisionButtons />

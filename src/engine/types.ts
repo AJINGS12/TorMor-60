@@ -49,9 +49,7 @@ export interface Question extends LocalizedText {
   id: QuestionId
   /** Which traveller fact or document this question uncovers. */
   reveals: string
-  /** Short labels for the question list (the full text is used in the chat). */
-  shortEn: string
-  shortTh: string
+  /** Small icon shown next to the question in the list. */
   icon: string
   /** Optional condition: the question is only offered when it holds (e.g. "purpose == 'study'"). */
   showWhen?: string

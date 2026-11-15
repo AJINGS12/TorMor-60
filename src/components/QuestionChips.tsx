@@ -3,11 +3,12 @@ import { useText } from '../i18n/useText'
 import { selectTraveller, useGameStore } from '../store/gameStore'
 
 /**
- * Compact question list in the interview panel: icon + short label.
- * Asked questions get a ✓ and turn grey; everything locks while the traveller answers.
+ * Question list in the interview panel: slim rows with a small icon and the full question.
+ * Text wraps (never truncated). Asked questions get a ✓ and grey text, and stay
+ * tappable to re-show their answer in the chat. Everything locks while the traveller answers.
  */
 export default function QuestionChips() {
-  const { lang } = useText()
+  const { t } = useText()
   const phase = useGameStore((s) => s.phase)
   const asked = useGameStore((s) => s.askedQuestionIds)
   const answeringId = useGameStore((s) => s.answeringId)
@@ -20,30 +21,38 @@ export default function QuestionChips() {
   const hint = phase === 'inspecting' && asked.length === 0 && answeringId === null
 
   return (
-    <div className={`grid grid-cols-2 gap-2 rounded-2xl p-1 ${hint ? 'animate-hint-glow' : ''}`}>
+    <ul className={`flex flex-col gap-1.5 rounded-xl ${hint ? 'animate-hint-glow' : ''}`}>
       {questions.map((q) => {
         const isAsked = asked.includes(q.id)
         const isAnswering = answeringId === q.id
         return (
-          <button
-            key={q.id}
-            onClick={() => askQuestion(q.id)}
-            disabled={locked || isAsked}
-            aria-pressed={isAsked}
-            title={lang === 'th' ? q.th : q.en}
-            className={`flex min-h-12 items-center gap-2 rounded-xl px-3 py-2 text-left text-base leading-tight font-semibold transition-colors ${
-              isAnswering
-                ? 'bg-brand text-white'
-                : isAsked
-                  ? 'bg-canvas text-muted'
-                  : 'bg-brand-50 text-brand hover:bg-brand-100'
-            } disabled:cursor-not-allowed ${locked && !isAnswering && !isAsked ? 'opacity-50' : ''}`}
-          >
-            <span className="shrink-0 text-lg">{isAsked ? '✓' : q.icon}</span>
-            <span className="min-w-0">{lang === 'th' ? q.shortTh : q.shortEn}</span>
-          </button>
+          <li key={q.id}>
+            <button
+              onClick={() => askQuestion(q.id)}
+              disabled={locked}
+              aria-pressed={isAsked}
+              data-question={q.id}
+              className={`flex min-h-11 w-full items-center gap-2.5 rounded-[10px] border px-3 py-2 text-left text-[15px] leading-snug font-medium transition-colors sm:text-base ${
+                isAnswering
+                  ? 'border-brand bg-brand text-white'
+                  : isAsked
+                    ? 'border-line bg-white text-muted hover:bg-brand-50'
+                    : 'border-line bg-white text-ink hover:border-brand-100 hover:bg-brand-50 active:bg-brand-50'
+              } disabled:cursor-not-allowed ${locked && !isAnswering ? 'opacity-50' : ''}`}
+            >
+              <span aria-hidden className="w-6 shrink-0 text-center text-base leading-none">
+                {q.icon}
+              </span>
+              <span className="min-w-0 flex-1 break-words">{t(q)}</span>
+              {isAsked && (
+                <span aria-hidden className="shrink-0 font-bold text-brand">
+                  ✓
+                </span>
+              )}
+            </button>
+          </li>
         )
       })}
-    </div>
+    </ul>
   )
 }

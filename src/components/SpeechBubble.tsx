@@ -20,7 +20,18 @@ export function TypingDots() {
  * One chat message in the interview log, messaging-app style:
  * officer on the right (navy), traveller on the left (grey).
  */
-export default function SpeechBubble({ from, children, highlight = false }: { from: 'officer' | 'traveller'; children: ReactNode; highlight?: boolean }) {
+export default function SpeechBubble({
+  from,
+  children,
+  highlight = false,
+  answerOf,
+}: {
+  from: 'officer' | 'traveller'
+  children: ReactNode
+  highlight?: boolean
+  /** Question id this bubble answers (lets the chat scroll back to it). */
+  answerOf?: string
+}) {
   const officer = from === 'officer'
   return (
     <motion.div
@@ -28,6 +39,7 @@ export default function SpeechBubble({ from, children, highlight = false }: { fr
       initial={{ opacity: 0, y: 8, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.18, ease: 'easeOut' }}
+      data-answer={answerOf}
       className={`flex ${officer ? 'justify-end' : 'justify-start'}`}
     >
       <div
