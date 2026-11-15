@@ -17,10 +17,10 @@
   },
 
   "config": {
-    "travellersPerGame": 5,
+    "travellersPerGame": 2,
     "timePerTravellerSec": 60,
     "questionAnswerDelaySec": 2,
-    "strikesToFail": 3,
+    "strikesToFail": 2,
     "timerWarningSec": 10,
     "idleResetSec": 90,
     "leaderboardSize": 10,
@@ -37,16 +37,16 @@
       "speedBonusFormula": "floor(secondsLeft / timePerTravellerSec * speedBonusMax)",
       "wrongDecision": 0,
       "timeout": 0,
-      "streakThreshold": 3,
+      "streakThreshold": 2,
       "streakMultiplier": 1.5
     },
     "strikeOn": ["wrongDecision", "timeout"],
     "ranks": [
       { "minScore": 0,    "en": "Trainee Officer",  "th": "เจ้าหน้าที่ฝึกหัด" },
-      { "minScore": 400,  "en": "Officer",          "th": "เจ้าหน้าที่ตรวจคนเข้าเมือง" },
-      { "minScore": 800,  "en": "Senior Officer",   "th": "เจ้าหน้าที่อาวุโส" },
-      { "minScore": 1100, "en": "Chief Inspector",  "th": "หัวหน้าผู้ตรวจการ" },
-      { "minScore": 1350, "en": "Border Legend",    "th": "ตำนานด่านตรวจ" }
+      { "minScore": 173,  "en": "Officer",          "th": "เจ้าหน้าที่ตรวจคนเข้าเมือง" },
+      { "minScore": 346,  "en": "Senior Officer",   "th": "เจ้าหน้าที่อาวุโส" },
+      { "minScore": 519,  "en": "Chief Inspector",  "th": "หัวหน้าผู้ตรวจการ" },
+      { "minScore": 692,  "en": "Border Legend",    "th": "ตำนานด่านตรวจ" }
     ]
   },
 
@@ -438,7 +438,7 @@
         { "en": "Check the passport. Tap questions to ask the traveller — each answer takes a moment.", "th": "ตรวจหนังสือเดินทาง แตะคำถามเพื่อถามผู้เดินทาง — แต่ละคำตอบใช้เวลาเล็กน้อย" },
         { "en": "Asking the right questions earns points. Wrong ones only waste time.", "th": "ถามคำถามที่ถูกต้องได้คะแนน ถามไม่จำเป็นแค่เสียเวลา" },
         { "en": "Stamp APPROVED or DENIED. If you deny, choose the reason for bonus points.", "th": "ประทับตรา อนุมัติ หรือ ปฏิเสธ ถ้าปฏิเสธ เลือกเหตุผลเพื่อรับคะแนนโบนัส" },
-        { "en": "3 mistakes and you're FIRED!", "th": "พลาด 3 ครั้ง คุณโดนไล่ออก!" }
+        { "en": "2 mistakes and you're FIRED!", "th": "พลาด 2 ครั้ง คุณโดนไล่ออก!" }
       ],
       "checklist": [
         { "en": "Passport valid for 6+ months", "th": "หนังสือเดินทางเหลืออายุ 6 เดือนขึ้นไป" },
@@ -450,7 +450,7 @@
         { "en": "Yellow fever certificate if from or via: Nigeria, Brazil, Kenya, Ethiopia", "th": "ต้องมีใบรับรองไข้เหลืองถ้ามาจากหรือผ่าน: ไนจีเรีย บราซิล เคนยา เอธิโอเปีย" },
         { "en": "Students need an acceptance letter", "th": "นักศึกษาต้องมีจดหมายตอบรับจากมหาวิทยาลัย" }
       ],
-      "start": { "en": "Start Shift", "th": "เริ่มเข้าเวร" },
+      "start": { "en": "Start", "th": "เริ่ม" },
       "exampleTitle": { "en": "How it works", "th": "เล่นยังไง" }
     },
     "game": {

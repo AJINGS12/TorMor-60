@@ -1,6 +1,6 @@
 // Points, streak multiplier, speed bonus and rank lookup — all values from
 // config.scoring / config.ranks in game-rules.json.
-import { config, ranks, scoringConfig as s } from './rules.ts'
+import { config, logic, ranks, scoringConfig as s } from './rules.ts'
 import type { Outcome, Rank, ScoreBreakdown } from './types.ts'
 
 /** floor(secondsLeft / timePerTravellerSec * speedBonusMax), clamped to the timer. */
@@ -92,4 +92,24 @@ export function rankFor(score: number): Rank {
   let rank = ranks[0]
   for (const r of ranks) if (score >= r.minScore) rank = r
   return rank
+}
+
+/**
+ * Best possible score for a full shift: every traveller is a correct DENY with the
+ * right reason, asks the largest possible set of needed questions (each costs
+ * questionAnswerDelaySec off the clock), and stamps right after the last answer.
+ * The streak multiplier applies once the streak reaches its threshold.
+ */
+export function maxPossibleScore(): number {
+  const nq = logic.necessaryQuestions
+  const maxNeeded =
+    nq.always.length +
+    nq.ifVisaRequired.length +
+    nq.ifYellowFeverRequired.length +
+    Math.max(0, ...Object.values(nq.byPurpose).map((l) => l.length))
+  const secondsLeft = config.timePerTravellerSec - maxNeeded * config.questionAnswerDelaySec
+  const perTraveller = s.correctDecision + s.correctDenyReason + maxNeeded * s.necessaryQuestionAsked + speedBonus(secondsLeft)
+  let total = 0
+  for (let i = 1; i <= config.travellersPerGame; i++) total += Math.floor(perTraveller * streakMultiplier(i))
+  return total
 }

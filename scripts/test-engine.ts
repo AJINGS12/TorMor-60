@@ -4,7 +4,7 @@
 import { generateShift, generateTraveller } from '../src/engine/generateTraveller.ts'
 import { evaluate, findViolations, getRequirements, questionsFor } from '../src/engine/requirements.ts'
 import { flaws, questions, rules } from '../src/engine/rules.ts'
-import { rankFor } from '../src/engine/scoring.ts'
+import { maxPossibleScore, rankFor } from '../src/engine/scoring.ts'
 import { createRng } from '../src/utils/random.ts'
 import type { Traveller } from '../src/engine/types.ts'
 
@@ -109,6 +109,14 @@ for (let i = 0; i < 200; i++) {
   const names = generateShift({ rng }).map((t) => t.name)
   if (new Set(names).size !== names.length) failures.push(`shift ${i} repeats a name: ${names.join(', ')}`)
 }
+
+// Ranks: 5 thresholds spread evenly from 0 to the best possible shift score.
+const max = maxPossibleScore()
+const expected = rules.config.ranks.map((_, i) => Math.round((max * i) / rules.config.ranks.length))
+const actual = rules.config.ranks.map((r) => r.minScore)
+console.log(`Max possible score: ${max} (${rules.config.travellersPerGame} travellers). Rank thresholds: ${actual.join(' / ')}
+`)
+if (actual.join() !== expected.join()) failures.push(`rank thresholds ${actual.join('/')} should be ${expected.join('/')} for max ${max}`)
 
 if (failures.length) {
   console.error(`✗ ${failures.length} failure(s):`)

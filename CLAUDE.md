@@ -33,7 +33,7 @@ It's a booth game for Nitify's capstone D-Day. The audience is mostly Thai high 
 1. **Landing:** title, tagline, EN/TH toggle, "Become an Immigration Officer" button
 2. **Nickname:** max 16 characters
 3. **Rules:** briefing and checklist
-4. **Game:** 5 travellers, 60 seconds each, 3 strikes = fired
+4. **Game:** 2 travellers, 60 seconds each, 2 strikes = fired
    - The traveller walks in with luggage. A tag above their head shows flag, nationality and persona.
    - The passport is always on the desk. Other documents appear only after asking the matching question.
    - Each question takes 2 seconds while the traveller answers (speech bubble).
