@@ -49,11 +49,16 @@ It's a booth game for Nitify's capstone D-Day. The audience is mostly Thai high 
 - Each traveller has 0 or 1 flaw. APPROVE is correct only when there's no flaw.
 
 ## Design direction
-- Fun, bold, game-like, not corporate. Think airport counter at night with neon accents.
+Light, clean, modern. Simple and intuitive.
+
+- **Colours:** white / very light grey backgrounds (`#FFFFFF` / `#F7F8FA`), dark text (`#111827`), one primary accent (Nitify blue `#2563EB`). Green is used **only** for APPROVED; red **only** for DENIED and strikes. No neon, no dark backgrounds.
+- **Style:** soft shadows, rounded corners (12–16px), plenty of white space. Few borders, low visual noise.
+- **One clear action per moment.** Highlight the next thing to do with a gentle pulse (e.g. question chips at the start of a traveller; the stamp buttons once all needed questions are asked).
+- **Typography:** Prompt (bundled, works offline), large sizes, readable at a glance from 1–2 m away at a booth. Thai text must render well.
+- **Documents** look like clean ID cards: white cards with a coloured header strip. Fictional designs only.
+- **Animations:** smooth and short. The stamp is still the hero moment: screen shake, ink splash, thunk sound.
+- **Sound:** generated with the Web Audio API (works offline). Countdown ticks in the final 10 seconds (higher pitch for the last 3). Mute toggle in the top bar.
 - Big touch targets (tablet-friendly). Minimum button height 48px.
-- The stamp is the hero moment: screen shake, ink splash, thunk sound.
-- Readable at a glance from 1–2 m away at a booth.
-- Thai text must render well: use a Thai-supporting font (e.g. Noto Sans Thai / Prompt).
 
 ## Content rules
 - Traveller names are fictional. No real people, no real ID designs, no government logos.
