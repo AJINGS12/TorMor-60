@@ -38,10 +38,10 @@ export default function RulesDemo() {
   }, [loop])
 
   return (
-    <div className="relative h-80 overflow-hidden rounded-2xl bg-[radial-gradient(ellipse_at_top,#1f2560,#0b0d2b)] ring-1 ring-neon-cyan/40">
+    <div className="relative h-80 overflow-hidden rounded-2xl bg-[linear-gradient(180deg,#e6efff,#f7f8fa)] shadow-soft">
       {/* Traveller */}
       <div className="absolute top-3 left-4 flex flex-col items-center">
-        <div className="mb-1 flex items-center gap-1.5 rounded-full bg-night-900/90 px-2 py-1 text-xs font-semibold ring-1 ring-neon-cyan/50">
+        <div className="mb-1 flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-ink shadow-soft">
           <Flag code={traveller.country.code} className="h-3.5" />
           {t(traveller.country)}
         </div>
@@ -50,8 +50,8 @@ export default function RulesDemo() {
 
       {/* Question chip */}
       <motion.div
-        className={`absolute top-6 right-4 max-w-[55%] rounded-full px-3 py-2 text-sm font-semibold ring-1 ${
-          step >= 2 ? 'bg-neon-amber text-night-950 ring-neon-amber' : 'bg-night-800 text-white ring-white/20'
+        className={`absolute top-6 right-4 max-w-[55%] rounded-full px-3 py-2 text-sm font-semibold ${
+          step >= 4 ? 'bg-brand-50 text-brand' : step >= 2 ? 'bg-brand text-white' : 'bg-white text-ink shadow-soft'
         }`}
         animate={step === 2 ? { scale: [1, 0.92, 1] } : { scale: 1 }}
       >
@@ -64,7 +64,7 @@ export default function RulesDemo() {
       <AnimatePresence>
         {step >= 3 && (
           <motion.div
-            className="absolute top-20 right-4 max-w-[55%] rounded-2xl rounded-bl-sm bg-white px-3 py-2 text-sm font-semibold text-slate-900"
+            className="absolute top-20 right-4 max-w-[55%] rounded-2xl rounded-bl-md bg-white px-3 py-2 text-sm font-semibold text-ink shadow-lift"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
@@ -72,7 +72,7 @@ export default function RulesDemo() {
             {step === 3 ? (
               <span className="flex gap-1 py-1">
                 {[0, 1, 2].map((i) => (
-                  <motion.span key={i} className="size-2 rounded-full bg-slate-500" animate={{ y: [0, -4, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }} />
+                  <motion.span key={i} className="size-2 rounded-full bg-muted" animate={{ y: [0, -4, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }} />
                 ))}
               </span>
             ) : (
@@ -83,8 +83,7 @@ export default function RulesDemo() {
       </AnimatePresence>
 
       {/* Desk */}
-      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-desk-700 to-desk-800">
-        <div className="h-0.5 bg-neon-pink/80 shadow-[0_0_10px_#ff3fa4]" />
+      <div className="absolute inset-x-0 bottom-0 h-28 rounded-t-2xl bg-white shadow-[0_-6px_20px_rgb(17_24_39/0.06)]">
         <AnimatePresence>
           {step >= 1 && (
             <motion.div
@@ -111,7 +110,7 @@ export default function RulesDemo() {
         </AnimatePresence>
       </div>
 
-      <div className="absolute top-2 left-1/2 -translate-x-1/2 text-xs font-semibold tracking-wider text-neon-cyan uppercase">
+      <div className="absolute top-2 left-1/2 -translate-x-1/2 text-xs font-semibold text-muted">
         ▶ {t(rules.ui.rules.exampleTitle)}
       </div>
     </div>
