@@ -21,13 +21,13 @@ export default function Leaderboard({ limit, highlightId, compact = false }: { l
   const shown = limit ? entries.slice(0, limit) : entries
 
   if (shown.length === 0) {
-    return <p className="py-4 text-center text-base text-slate-400">{t(ui.empty)}</p>
+    return <p className="py-4 text-center text-lg text-muted">{t(ui.empty)}</p>
   }
 
   return (
-    <table className="w-full border-separate border-spacing-y-1.5 text-left">
+    <table className="w-full border-separate border-spacing-y-2 text-left">
       {!compact && (
-        <thead className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
+        <thead className="text-sm font-semibold text-muted">
           <tr>
             <th className="w-10 px-2">#</th>
             <th className="px-2">{t(ui.officer)}</th>
@@ -46,18 +46,18 @@ export default function Leaderboard({ limit, highlightId, compact = false }: { l
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.05 * i }}
-              className={mine ? 'bg-neon-pink/20 ring-2 ring-neon-pink glow-pink' : 'bg-night-800/70'}
+              className={mine ? 'bg-brand-50 outline-2 outline-brand' : 'bg-canvas'}
             >
-              <td className="w-12 rounded-l-lg px-2 py-2 text-lg font-extrabold">{MEDALS[i] ?? i + 1}</td>
-              <td className="max-w-[10rem] truncate px-2 py-2 text-left text-lg font-semibold">
+              <td className="w-12 rounded-l-xl px-3 py-2.5 text-xl font-extrabold">{MEDALS[i] ?? i + 1}</td>
+              <td className="max-w-[10rem] truncate px-2 py-2.5 text-left text-lg font-semibold text-ink">
                 {e.nickname}
-                {mine && <span className="ml-2 rounded-full bg-neon-pink px-2 py-0.5 text-xs font-bold text-night-950">{t(ui.you)}</span>}
+                {mine && <span className="ml-2 rounded-full bg-brand px-2 py-0.5 text-xs font-bold text-white">{t(ui.you)}</span>}
               </td>
-              <td className={`px-2 py-2 text-right text-lg font-extrabold text-neon-amber tabular-nums ${compact ? 'rounded-r-lg' : ''}`}>{e.score}</td>
+              <td className={`px-3 py-2.5 text-right text-xl font-extrabold text-ink tabular-nums ${compact ? 'rounded-r-xl' : ''}`}>{e.score}</td>
               {!compact && (
                 <>
-                  <td className="hidden px-2 py-2 text-sm text-slate-300 sm:table-cell">{t(rankFor(e.score))}</td>
-                  <td className="rounded-r-lg px-2 py-2 text-right text-sm text-slate-400 tabular-nums">{clockTime(e.playedAt, lang)}</td>
+                  <td className="hidden px-2 py-2.5 text-sm text-muted sm:table-cell">{t(rankFor(e.score))}</td>
+                  <td className="rounded-r-xl px-3 py-2.5 text-right text-sm text-muted tabular-nums">{clockTime(e.playedAt, lang)}</td>
                 </>
               )}
             </motion.tr>

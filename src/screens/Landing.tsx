@@ -3,7 +3,7 @@ import { useRef, useState, type MouseEvent } from 'react'
 import Avatar from '../components/Avatar'
 import LanguageToggle from '../components/LanguageToggle'
 import Leaderboard from '../components/Leaderboard'
-import NightAirport from '../components/NightAirport'
+import AirportScene from '../components/AirportScene'
 import { rules } from '../engine/rules'
 import type { PurposeId } from '../engine/types'
 import { useText } from '../i18n/useText'
@@ -31,7 +31,7 @@ function Passerby() {
         animate={{ y: [0, -8, 0], rotate: [-2, 2, -2] }}
         transition={{ duration: 0.5, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <Avatar seed={lap * 7919 + 17} purpose={PURPOSES[lap % PURPOSES.length]} className="h-full w-auto opacity-90" />
+        <Avatar seed={lap * 7919 + 17} purpose={PURPOSES[lap % PURPOSES.length]} className="h-full w-auto drop-shadow-[0_10px_14px_rgb(17_24_39/0.12)]" />
       </motion.div>
     </motion.div>
   )
@@ -57,11 +57,11 @@ function ResetDialog({ onClose }: { onClose: () => void }) {
   const { t } = useText()
   const clear = useLeaderboard((s) => s.clear)
   return (
-    <motion.div className="fixed inset-0 z-50 grid place-items-center bg-black/75 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <div role="alertdialog" aria-modal="true" className="w-full max-w-sm rounded-2xl bg-night-900 p-5 ring-2 ring-neon-red glow-red">
-        <p className="mb-4 text-lg font-semibold">{t(rules.ui.leaderboard.resetConfirm)}</p>
+    <motion.div className="fixed inset-0 z-50 grid place-items-center bg-ink/25 p-4 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <div role="alertdialog" aria-modal="true" className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-lift">
+        <p className="mb-5 text-lg font-semibold text-ink">{t(rules.ui.leaderboard.resetConfirm)}</p>
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={onClose} className="h-12 rounded-xl font-semibold ring-1 ring-white/25 hover:bg-white/10">
+          <button onClick={onClose} className="h-12 rounded-xl bg-canvas font-semibold text-ink hover:bg-line">
             {t(rules.ui.game.cancel)}
           </button>
           <button
@@ -69,7 +69,7 @@ function ResetDialog({ onClose }: { onClose: () => void }) {
               clear()
               onClose()
             }}
-            className="h-12 rounded-xl bg-neon-red font-extrabold text-white"
+            className="h-12 rounded-xl bg-deny font-bold text-white"
           >
             {t(rules.ui.leaderboard.resetYes)}
           </button>
@@ -86,68 +86,69 @@ export default function Landing() {
   const longPress = useLongPress(() => setConfirmReset(true))
 
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-night-950">
-      <NightAirport />
+    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-canvas">
+      <AirportScene />
       <Passerby />
 
-      <header className="relative z-10 flex justify-end p-4">
+      <header className="relative z-10 flex justify-end p-5">
         <LanguageToggle />
       </header>
 
-      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6 px-4 pb-6 text-center">
+      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-7 px-4 pb-6 text-center">
         <div {...longPress} className="cursor-default touch-none select-none">
           <motion.span
-            className="mb-2 inline-block rounded-md border-2 border-neon-amber px-3 py-0.5 text-lg font-extrabold text-neon-amber shadow-[0_0_14px_rgb(255_197_61/0.6)]"
-            initial={{ rotate: -8, scale: 0 }}
-            animate={{ rotate: -8, scale: 1 }}
-            transition={{ delay: 0.6, type: 'spring' }}
+            className="mb-3 inline-block rounded-full bg-brand-50 px-4 py-1 text-lg font-bold text-brand"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.3 }}
           >
             {t(ui.logoBadge)}
           </motion.span>
           <motion.h1
-            className="text-6xl leading-none font-extrabold tracking-tight text-white sm:text-8xl"
-            style={{ textShadow: '0 0 18px #22e4ff, 0 0 42px #22e4ff, 0 0 80px #ff3fa4' }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: [0, 1, 0.6, 1, 0.85, 1], scale: 1 }}
-            transition={{ duration: 1.4, times: [0, 0.3, 0.4, 0.55, 0.65, 1] }}
+            className="text-6xl leading-none font-extrabold tracking-tight text-ink sm:text-8xl"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
           >
-            {t(ui.logo)}
+            {t(ui.logo)
+              .split(/(d+)/)
+              .map((part, i) => (/d/.test(part) ? <span key={i} className="text-brand">{part}</span> : part))}
           </motion.h1>
         </div>
 
         <motion.p
-          className="max-w-xl text-xl font-semibold text-cyan-100 sm:text-2xl"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
+          className="max-w-xl text-xl font-medium text-muted sm:text-2xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
         >
           {t(ui.subtitle)}
         </motion.p>
 
         <motion.button
           onClick={nextScreen}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0, scale: [1, 1.04, 1] }}
-          transition={{ opacity: { delay: 1 }, y: { delay: 1 }, scale: { duration: 1.6, repeat: Infinity, delay: 1.5 } }}
-          whileTap={{ scale: 0.95 }}
-          className="min-h-16 rounded-2xl bg-neon-pink px-8 py-4 text-xl font-extrabold text-white glow-pink sm:text-2xl"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.3 }}
+          whileTap={{ scale: 0.97 }}
+          className="min-h-16 animate-hint rounded-2xl bg-brand px-10 py-4 text-xl font-bold text-white shadow-soft hover:bg-brand-600 sm:text-2xl"
         >
           {t(ui.cta)} →
         </motion.button>
 
         <motion.section
-          className="w-full max-w-md rounded-2xl bg-night-900/80 p-4 ring-1 ring-neon-cyan/40 backdrop-blur"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
+          className="w-full max-w-md rounded-2xl bg-white p-5 shadow-soft"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.3 }}
         >
-          <h2 className="mb-1 text-left text-sm font-semibold tracking-wider text-neon-cyan uppercase">🏆 {t(ui.topOfficers)}</h2>
+          <h2 className="mb-1 text-left text-base font-semibold text-muted">🏆 {t(ui.topOfficers)}</h2>
           <Leaderboard limit={3} compact />
         </motion.section>
       </main>
 
-      <footer className="relative z-10 flex justify-end px-5 pb-4">
-        <span className="rounded-full bg-night-900/80 px-4 py-1.5 text-sm font-semibold text-slate-300 ring-1 ring-white/15">{t(ui.byNitify)}</span>
+      <footer className="relative z-10 flex justify-end px-5 pb-5">
+        <span className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-muted shadow-soft">{t(ui.byNitify)}</span>
       </footer>
 
       <AnimatePresence>{confirmReset && <ResetDialog onClose={() => setConfirmReset(false)} />}</AnimatePresence>

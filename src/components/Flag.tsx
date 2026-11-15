@@ -157,10 +157,10 @@ const FLAGS: Record<string, ReactNode> = {
 export default function Flag({ code, className = 'h-5' }: { code: string; className?: string }) {
   const art = FLAGS[code]
   if (!art) {
-    return <span className={`inline-grid aspect-[3/2] place-items-center rounded-sm bg-slate-600 text-[9px] font-bold ${className}`}>{code}</span>
+    return <span className={`inline-grid aspect-[3/2] place-items-center rounded-sm bg-line text-[9px] font-bold text-muted ${className}`}>{code}</span>
   }
   return (
-    <svg viewBox="0 0 30 20" className={`inline-block aspect-[3/2] shrink-0 rounded-[2px] shadow-[0_0_0_1px_rgb(255_255_255/0.25)] ${className}`} role="img" aria-label={code}>
+    <svg viewBox="0 0 30 20" className={`inline-block aspect-[3/2] shrink-0 rounded-[2px] shadow-[0_0_0_1px_rgb(17_24_39/0.12)] ${className}`} role="img" aria-label={code}>
       {art}
     </svg>
   )
