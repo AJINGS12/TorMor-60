@@ -296,10 +296,17 @@ export function generateTraveller(options: GenerateOptions = {}): Traveller {
   }
 }
 
-/** Generates a full shift of travellers (config.travellersPerGame). */
+/** Generates a full shift of travellers (config.travellersPerGame), with no repeated names. */
 export function generateShift(options: Omit<GenerateOptions, 'id' | 'forceFlawId'> = {}): Traveller[] {
-  return Array.from({ length: config.travellersPerGame }, (_, i) =>
-    generateTraveller({ ...options, id: `traveller-${i + 1}` }),
-  )
+  const shift: Traveller[] = []
+  for (let i = 0; i < config.travellersPerGame; i++) {
+    let t = generateTraveller({ ...options, id: `traveller-${i + 1}` })
+    // Re-roll a few times if the name is already in this shift (falls back to a repeat if it must).
+    for (let tries = 0; tries < 20 && shift.some((x) => x.name === t.name); tries++) {
+      t = generateTraveller({ ...options, id: `traveller-${i + 1}` })
+    }
+    shift.push(t)
+  }
+  return shift
 }
 

@@ -1,7 +1,7 @@
 // Engine smoke test: npm run test:engine [count] [seed]
 // Generates travellers and checks that valid ones evaluate as APPROVE and
 // flawed ones as DENY with the flaw's deny reason.
-import { generateTraveller } from '../src/engine/generateTraveller.ts'
+import { generateShift, generateTraveller } from '../src/engine/generateTraveller.ts'
 import { evaluate, findViolations, getRequirements } from '../src/engine/requirements.ts'
 import { flaws, questions, rules } from '../src/engine/rules.ts'
 import { rankFor } from '../src/engine/scoring.ts'
@@ -92,6 +92,12 @@ for (let i = 0; i < rules.config.travellersPerGame; i++) {
   score += r.breakdown.total
 }
 console.log(`Perfect shift (max speed): ${score} pts → ${rankFor(score).en}\n`)
+
+// Shifts never repeat a traveller name.
+for (let i = 0; i < 200; i++) {
+  const names = generateShift({ rng }).map((t) => t.name)
+  if (new Set(names).size !== names.length) failures.push(`shift ${i} repeats a name: ${names.join(', ')}`)
+}
 
 if (failures.length) {
   console.error(`✗ ${failures.length} failure(s):`)
