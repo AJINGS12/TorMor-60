@@ -43,11 +43,11 @@
     "strikeOn": ["wrongDecision", "timeout"],
     "ranks": [
       { "minScore": 0,    "en": "Trainee Officer",  "th": "เจ้าหน้าที่ฝึกหัด" },
-      { "minScore": 200,  "en": "Junior Officer",   "th": "เจ้าหน้าที่ระดับต้น" },
+      { "minScore": 250,  "en": "Junior Officer",   "th": "เจ้าหน้าที่ระดับต้น" },
       { "minScore": 350,  "en": "Officer",          "th": "เจ้าหน้าที่ตรวจคนเข้าเมือง" },
       { "minScore": 500,  "en": "Senior Officer",   "th": "เจ้าหน้าที่อาวุโส" },
       { "minScore": 650,  "en": "Chief Inspector",  "th": "หัวหน้าผู้ตรวจการ" },
-      { "minScore": 800,  "en": "Border Legend",    "th": "ตำนานด่านตรวจ" }
+      { "minScore": 750,  "en": "Border Legend",    "th": "ตำนานด่านตรวจ" }
     ]
   },
 
