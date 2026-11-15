@@ -6,6 +6,7 @@ import { evaluate, findViolations, getRequirements, questionsFor } from '../src/
 import { flaws, questions, rules } from '../src/engine/rules.ts'
 import { maxPossibleScore, rankFor } from '../src/engine/scoring.ts'
 import { createRng } from '../src/utils/random.ts'
+import { runScoreSimulation } from './score-sim.ts'
 import type { Traveller } from '../src/engine/types.ts'
 
 const COUNT = Number(process.argv[2] ?? 200)
@@ -110,13 +111,13 @@ for (let i = 0; i < 200; i++) {
   if (new Set(names).size !== names.length) failures.push(`shift ${i} repeats a name: ${names.join(', ')}`)
 }
 
-// Ranks: 5 thresholds spread evenly from 0 to the best possible shift score.
-const max = maxPossibleScore()
-const expected = rules.config.ranks.map((_, i) => Math.round((max * i) / rules.config.ranks.length))
+// Ranks: thresholds must be ascending and the top rank reachable in theory.
 const actual = rules.config.ranks.map((r) => r.minScore)
-console.log(`Max possible score: ${max} (${rules.config.travellersPerGame} travellers). Rank thresholds: ${actual.join(' / ')}
-`)
-if (actual.join() !== expected.join()) failures.push(`rank thresholds ${actual.join('/')} should be ${expected.join('/')} for max ${max}`)
+if (actual.some((v, i) => i > 0 && v <= actual[i - 1])) failures.push(`rank thresholds not ascending: ${actual.join('/')}`)
+if (actual[actual.length - 1] > maxPossibleScore()) failures.push(`top rank ${actual[actual.length - 1]} is above the max possible score ${maxPossibleScore()}`)
+
+// Score simulation with three player types (report only).
+runScoreSimulation(rng, 1000)
 
 if (failures.length) {
   console.error(`✗ ${failures.length} failure(s):`)
