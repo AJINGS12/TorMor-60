@@ -29,7 +29,7 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
       <div className="mb-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
         {t(ui.desk)} · <span className="normal-case">{t(ui.tapToZoom)}</span>
       </div>
-      <div className="flex min-h-28 gap-3 overflow-x-auto pb-1">
+      <div className="-my-3 flex min-h-28 gap-3 overflow-x-auto overflow-y-hidden py-3">
         <AnimatePresence>
           {docs.map((doc, i) => (
             <motion.button
@@ -46,7 +46,7 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
             >
               <DocumentThumb traveller={traveller} doc={doc} />
               {doc.slot === 'passport' && stamped && (
-                <div className="absolute right-1 bottom-2 -rotate-12">
+                <div className="absolute top-1/2 right-1 -translate-y-1/2 -rotate-12">
                   <StampMark decision={stamped} size="sm" />
                 </div>
               )}

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useAnimate } from 'framer-motion'
 import { useState } from 'react'
+import CaseResult from '../components/CaseResult'
 import Counter from '../components/Counter'
 import DenyReasonPicker from '../components/DenyReasonPicker'
 import DocumentCard from '../components/DocumentCard'
@@ -17,7 +18,7 @@ import { rules } from '../engine/rules'
 import { streakMultiplier } from '../engine/scoring'
 import { useText } from '../i18n/useText'
 import type { Traveller as TravellerData } from '../engine/types'
-import { selectIsLastRound, selectTraveller, useGameStore } from '../store/gameStore'
+import { selectTraveller, useGameStore } from '../store/gameStore'
 
 const ui = rules.ui.game
 
@@ -47,7 +48,7 @@ function TopBar({ onOpenRulebook }: { onOpenRulebook: () => void }) {
       </div>
       <button
         onClick={onOpenRulebook}
-        className="h-12 rounded-full px-4 text-sm font-semibold text-neon-amber ring-1 ring-neon-amber/50 hover:bg-neon-amber/10 lg:hidden"
+        className="h-12 rounded-full px-4 text-sm font-semibold text-neon-amber ring-1 ring-neon-amber/50 hover:bg-neon-amber/10 xl:hidden"
       >
         📘 {t(ui.rulebook)}
       </button>
@@ -148,9 +149,8 @@ export default function Game() {
   const [rulebookOpen, setRulebookOpen] = useState(false)
   const phase = useGameStore((s) => s.phase)
   const traveller = useGameStore(selectTraveller)
-  const isLastRound = useGameStore(selectIsLastRound)
+  const lastResult = useGameStore((s) => s.lastResult)
   const travellerArrived = useGameStore((s) => s.travellerArrived)
-  const nextTraveller = useGameStore((s) => s.nextTraveller)
   const [scope, animate] = useAnimate()
 
   const shake = () => {
@@ -164,7 +164,7 @@ export default function Game() {
       <TopBar onOpenRulebook={() => setRulebookOpen(true)} />
 
       <div className="flex min-h-0 flex-1">
-        <main className="flex min-w-0 flex-1 flex-col">
+        <main className="relative flex min-w-0 flex-1 flex-col">
           {/* Traveller area */}
           <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
             <Backdrop />
@@ -193,18 +193,24 @@ export default function Game() {
             </div>
             <div className="flex items-end gap-4">
               <Desk key={traveller.id} traveller={traveller} />
-              {phase === 'result' ? (
-                <button
-                  onClick={nextTraveller}
-                  className="h-14 shrink-0 rounded-xl bg-neon-cyan px-6 text-lg font-extrabold text-night-950 glow-cyan"
-                >
-                  {t(isLastRound ? ui.finish : ui.next)}
-                </button>
-              ) : (
-                <DecisionButtons />
-              )}
+              <DecisionButtons />
             </div>
           </Counter>
+
+          {/* Case result over the play area once the round is scored */}
+          <AnimatePresence>
+            {phase === 'result' && lastResult && (
+              <motion.div
+                key={`result-${traveller.id}`}
+                className="absolute inset-0 z-30 flex flex-col items-center justify-center-safe overflow-y-auto bg-night-950/60 p-4 backdrop-blur-[2px]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <CaseResult traveller={traveller} result={lastResult} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </main>
 
         <Rulebook open={rulebookOpen} onClose={() => setRulebookOpen(false)} />

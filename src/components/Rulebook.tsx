@@ -28,13 +28,13 @@ export default function Rulebook({ open, onClose }: { open: boolean; onClose: ()
   const { t } = useText()
   return (
     <>
-      <aside className="hidden w-80 shrink-0 overflow-y-auto border-l border-white/10 bg-night-900/80 lg:block">
+      <aside className="hidden w-80 shrink-0 overflow-y-auto border-l border-white/10 bg-night-900/80 xl:block">
         <RulebookContent />
       </aside>
 
       <AnimatePresence>
         {open && (
-          <motion.div className="fixed inset-0 z-40 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div className="fixed inset-0 z-40 xl:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <button aria-label={t(rules.ui.game.close)} className="absolute inset-0 bg-black/60" onClick={onClose} />
             <motion.aside
               className="absolute inset-y-0 right-0 w-[min(22rem,90vw)] overflow-y-auto border-l border-neon-amber/40 bg-night-900"
