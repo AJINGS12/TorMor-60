@@ -4,7 +4,8 @@ import { useText } from '../i18n/useText'
 import { useGameStore } from '../store/gameStore'
 
 const ACTIVITY_EVENTS = ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart'] as const
-const DEFAULT_LANG = 'th'
+// The game always opens (and resets) in English; players switch with the EN/TH toggle.
+const DEFAULT_LANG = 'en'
 
 /**
  * Booth safety net: after config.idleResetSec with no input on any screen
