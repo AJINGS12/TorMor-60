@@ -466,6 +466,7 @@
       "fired":     { "en": "YOU'RE FIRED!", "th": "คุณโดนไล่ออก!" },
       "complete":  { "en": "SHIFT COMPLETE", "th": "จบเวรแล้ว!" },
       "playAgain": { "en": "Play again", "th": "เล่นอีกครั้ง" },
+      "newPlayer": { "en": "New player", "th": "ผู้เล่นใหม่" },
       "leaderboard": { "en": "Leaderboard", "th": "ตารางคะแนน" },
       "yourScore": { "en": "Your score", "th": "คะแนนของคุณ" },
       "yourRank":  { "en": "Rank", "th": "ยศ" },

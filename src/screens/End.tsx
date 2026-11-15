@@ -66,6 +66,7 @@ export default function End() {
   const nickname = useGameStore((s) => s.nickname)
   const lastEntryId = useGameStore((s) => s.lastEntryId)
   const startGame = useGameStore((s) => s.startGame)
+  const newPlayer = useGameStore((s) => s.newPlayer)
   const [scope, shake] = useAnimate()
 
   const fired = isFired(strikes)
@@ -149,16 +150,29 @@ export default function End() {
           💡 {t(ui.nitifyCta)}
         </motion.p>
 
-        <motion.button
-          onClick={startGame}
-          whileTap={{ scale: 0.95 }}
-          className="min-h-16 w-full max-w-md animate-hint rounded-2xl bg-brand text-2xl font-bold text-white shadow-soft hover:bg-brand-600"
+        <motion.div
+          className="grid w-full max-w-2xl gap-3 sm:grid-cols-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2 }}
         >
-          🔁 {t(ui.playAgain)}
-        </motion.button>
+          {/* Same officer: straight into a new shift (no Landing, Nickname or Rules). */}
+          <motion.button
+            onClick={startGame}
+            whileTap={{ scale: 0.96 }}
+            className="min-h-16 animate-hint rounded-2xl bg-brand text-2xl font-bold text-white shadow-soft hover:bg-brand-600"
+          >
+            🔁 {t(ui.playAgain)}
+          </motion.button>
+          {/* Next person at the booth: new nickname, then the Rules briefing again. */}
+          <motion.button
+            onClick={newPlayer}
+            whileTap={{ scale: 0.96 }}
+            className="min-h-16 rounded-2xl bg-white text-2xl font-bold text-brand ring-2 ring-brand hover:bg-brand-50"
+          >
+            👤 {t(ui.newPlayer)}
+          </motion.button>
+        </motion.div>
 
         <p className="max-w-2xl text-center text-sm leading-relaxed text-muted">{t(rules.meta.disclaimer)}</p>
       </main>

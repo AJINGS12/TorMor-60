@@ -46,6 +46,8 @@ interface GameState {
   reset: () => void
 
   startGame: () => void
+  /** Clear the nickname and go to the Nickname screen (then Rules, then a new shift). */
+  newPlayer: () => void
   travellerArrived: () => void
   askQuestion: (id: QuestionId) => void
   openDenyPicker: () => void
@@ -145,6 +147,11 @@ export const useGameStore = create<GameState>()((set, get) => {
     reset: () => {
       clearTimers()
       set({ ...gameReset, nickname: '', screen: 'landing' })
+    },
+
+    newPlayer: () => {
+      clearTimers()
+      set({ ...gameReset, nickname: '', screen: 'nickname' })
     },
 
     startGame: () => {
