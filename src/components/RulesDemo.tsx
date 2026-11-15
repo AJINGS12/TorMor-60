@@ -38,7 +38,7 @@ export default function RulesDemo() {
   }, [loop])
 
   return (
-    <div className="relative h-80 overflow-hidden rounded-2xl bg-[linear-gradient(180deg,#e6efff,#f7f8fa)] shadow-soft">
+    <div className="relative h-80 overflow-hidden rounded-2xl bg-[linear-gradient(180deg,#e8edf7,#f7f8fa)] shadow-soft">
       {/* Traveller */}
       <div className="absolute top-3 left-4 flex flex-col items-center">
         <div className="mb-1 flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-ink shadow-soft">

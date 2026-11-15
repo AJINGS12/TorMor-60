@@ -13,7 +13,7 @@ export default function Rules() {
   const nickname = useGameStore((s) => s.nickname)
 
   return (
-    <div className="relative flex min-h-dvh flex-col bg-[linear-gradient(180deg,#eef3ff_0%,#f7f8fa_40%)]">
+    <div className="relative flex min-h-dvh flex-col bg-[linear-gradient(180deg,#e8edf7_0%,#f7f8fa_40%)]">
       <header className="relative z-10 flex items-center justify-between gap-4 p-5">
         <h1 className="text-4xl font-extrabold text-ink sm:text-5xl">
           📋 {t(ui.title)}

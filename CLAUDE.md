@@ -51,7 +51,7 @@ It's a booth game for Nitify's capstone D-Day. The audience is mostly Thai high 
 ## Design direction
 Light, clean, modern. Simple and intuitive.
 
-- **Colours:** white / very light grey backgrounds (`#FFFFFF` / `#F7F8FA`), dark text (`#111827`), one primary accent (Nitify blue `#2563EB`). Green is used **only** for APPROVED; red **only** for DENIED and strikes. No neon, no dark backgrounds.
+- **Colours:** white / very light grey backgrounds (`#FFFFFF` / `#F7F8FA`), dark text (`#111827`), one primary accent: navy `#1E3A8A` (hover `#172554`, light tint `#E8EDF7`). Green is used **only** for APPROVED; red **only** for DENIED and strikes. No neon, no dark backgrounds.
 - **Style:** soft shadows, rounded corners (12–16px), plenty of white space. Few borders, low visual noise.
 - **One clear action per moment.** Highlight the next thing to do with a gentle pulse (e.g. question chips at the start of a traveller; the stamp buttons once all needed questions are asked).
 - **Typography:** Prompt (bundled, works offline), large sizes, readable at a glance from 1–2 m away at a booth. Thai text must render well.

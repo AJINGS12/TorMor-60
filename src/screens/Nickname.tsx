@@ -32,7 +32,7 @@ export default function Nickname() {
 
   return (
     // Content sits in the top half so an on-screen keyboard never covers the input or button.
-    <div className="relative flex min-h-dvh flex-col bg-[linear-gradient(180deg,#eef3ff_0%,#f7f8fa_45%)]">
+    <div className="relative flex min-h-dvh flex-col bg-[linear-gradient(180deg,#e8edf7_0%,#f7f8fa_45%)]">
       <header className="relative z-10 flex justify-end p-5">
         <LanguageToggle />
       </header>

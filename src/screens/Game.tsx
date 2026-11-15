@@ -65,7 +65,7 @@ function TopBar({ onOpenRulebook }: { onOpenRulebook: () => void }) {
 /** Bright airport hall behind the traveller. */
 function Backdrop() {
   return (
-    <div aria-hidden className="absolute inset-0 overflow-hidden bg-[linear-gradient(180deg,#eaf1ff_0%,#f7f8fa_70%)]">
+    <div aria-hidden className="absolute inset-0 overflow-hidden bg-[linear-gradient(180deg,#e8edf7_0%,#f7f8fa_70%)]">
       {/* Big window onto the apron */}
       <div className="absolute inset-x-[6%] top-[14%] h-[40%] overflow-hidden rounded-3xl bg-[linear-gradient(180deg,#cfe0ff,#eef4ff)]">
         <div className="absolute bottom-0 h-[22%] w-full bg-white/60" />

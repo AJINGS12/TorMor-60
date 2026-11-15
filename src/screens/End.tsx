@@ -35,7 +35,7 @@ function useCountUp(value: number): number {
 function BigStamp({ fired, onImpact }: { fired: boolean; onImpact: () => void }) {
   const { t } = useText()
   // Red only for FIRED (strikes); a completed shift uses the brand colour.
-  const color = fired ? '#dc2626' : '#2563eb'
+  const color = fired ? '#dc2626' : '#1e3a8a'
   return (
     <motion.div
       className="relative"
@@ -73,7 +73,7 @@ export default function End() {
   const rank = rankFor(score)
 
   return (
-    <div ref={scope} className="relative min-h-dvh overflow-x-clip bg-[linear-gradient(180deg,#eef3ff_0%,#f7f8fa_35%)]">
+    <div ref={scope} className="relative min-h-dvh overflow-x-clip bg-[linear-gradient(180deg,#e8edf7_0%,#f7f8fa_35%)]">
       <header className="relative z-10 flex justify-end p-5">
         <LanguageToggle />
       </header>

@@ -10,7 +10,7 @@ const CLOUDS = [
 export default function AirportScene() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,#e6efff_0%,#f4f7fd_55%,#f7f8fa_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,#e8edf7_0%,#f4f7fd_55%,#f7f8fa_100%)]" />
 
       {CLOUDS.map((c, i) => (
         <motion.div
