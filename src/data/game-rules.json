@@ -85,10 +85,6 @@
   ],
   "routeChance": { "direct": 0.5, "safeTransit": 0.25, "yellowFeverTransit": 0.25 },
   "universities": [
-    "Bangkok International University",
-    "Chao Phraya Institute of Technology",
-    "Golden Orchid University",
-    "Andaman University of Arts & Sciences",
     "King Mongkut's University of Technology Thonburi (KMUTT)"
   ],
 
