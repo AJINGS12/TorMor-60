@@ -79,7 +79,7 @@
     { "code": "SG", "en": "Singapore", "th": "สิงคโปร์",            "flag": "🇸🇬" },
     { "code": "QA", "en": "Qatar",     "th": "กาตาร์",              "flag": "🇶🇦" }
   ],
-  "routeChance": { "direct": 0.6, "safeTransit": 0.25, "yellowFeverTransit": 0.15 },
+  "routeChance": { "direct": 0.5, "safeTransit": 0.25, "yellowFeverTransit": 0.25 },
 
   "countries": [
     {
@@ -252,6 +252,7 @@
   "flaws": [
     {
       "id": "passport_expired",
+      "weight": 1,
       "denyReason": "r_passport_invalid",
       "applicableWhen": "always",
       "visualOnly": true,
@@ -260,6 +261,7 @@
     },
     {
       "id": "passport_under_6_months",
+      "weight": 1,
       "denyReason": "r_passport_invalid",
       "applicableWhen": "always",
       "visualOnly": true,
@@ -268,6 +270,7 @@
     },
     {
       "id": "name_mismatch",
+      "weight": 2,
       "denyReason": "r_name_mismatch",
       "applicableWhen": "always",
       "visualOnly": true,
@@ -277,6 +280,7 @@
     },
     {
       "id": "no_tdac",
+      "weight": 2,
       "denyReason": "r_no_tdac",
       "applicableWhen": "always",
       "revealedBy": "q_tdac",
@@ -284,6 +288,7 @@
     },
     {
       "id": "no_return_ticket",
+      "weight": 2,
       "denyReason": "r_no_ticket",
       "applicableWhen": "purpose == 'tourism'",
       "revealedBy": "q_ticket",
@@ -291,13 +296,15 @@
     },
     {
       "id": "no_visa",
+      "weight": 3,
       "denyReason": "r_no_visa",
-      "applicableWhen": "visaRequired",
+      "applicableWhen": "country.visaExemptTourismDays == 0 OR purpose != 'tourism'",
       "revealedBy": "q_visa",
       "explain": { "en": "This traveller needs a visa but doesn't have one.", "th": "ผู้เดินทางคนนี้ต้องมีวีซ่าแต่ไม่มี" }
     },
     {
       "id": "wrong_visa",
+      "weight": 3,
       "denyReason": "r_wrong_visa",
       "applicableWhen": "purpose in ['study','work']",
       "revealedBy": "q_visa",
@@ -306,6 +313,7 @@
     },
     {
       "id": "stay_exceeds_exemption",
+      "weight": 3,
       "denyReason": "r_stay_too_long",
       "applicableWhen": "purpose == 'tourism' AND country.visaExemptTourismDays > 0",
       "revealedBy": "q_stay",
@@ -314,6 +322,7 @@
     },
     {
       "id": "no_yellow_fever",
+      "weight": 3,
       "denyReason": "r_no_yellow_fever",
       "applicableWhen": "yellowFeverRequired",
       "revealedBy": "q_yellow_fever",
