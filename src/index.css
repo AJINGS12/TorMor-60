@@ -34,40 +34,6 @@
     0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--hint, #2563eb) 45%, transparent); transform: scale(1); }
     50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--hint, #2563eb) 0%, transparent); transform: scale(1.03); }
   }
-
-  /* Airport counter at night */
-  --color-night-950: #05061a;
-  --color-night-900: #0b0d2b;
-  --color-night-800: #141842;
-  --color-night-700: #1f2560;
-  --color-desk-800: #2a1f3d;
-  --color-desk-700: #3a2b52;
-
-  /* Neon accents */
-  --color-neon-cyan: #22e4ff;
-  --color-neon-pink: #ff3fa4;
-  --color-neon-green: #39ff88;
-  --color-neon-red: #ff3b5c;
-  --color-neon-amber: #ffc53d;
-}
-
-@utility glow-cyan {
-  box-shadow: 0 0 0 1px rgb(34 228 255 / 0.5), 0 0 18px rgb(34 228 255 / 0.35);
-}
-@utility glow-pink {
-  box-shadow: 0 0 0 1px rgb(255 63 164 / 0.5), 0 0 18px rgb(255 63 164 / 0.35);
-}
-@utility glow-green {
-  box-shadow: 0 0 0 2px rgb(57 255 136 / 0.7), 0 0 28px rgb(57 255 136 / 0.45);
-}
-@utility glow-red {
-  box-shadow: 0 0 0 2px rgb(255 59 92 / 0.7), 0 0 28px rgb(255 59 92 / 0.45);
-}
-@utility text-glow-cyan {
-  text-shadow: 0 0 12px rgb(34 228 255 / 0.8);
-}
-@utility text-glow-pink {
-  text-shadow: 0 0 12px rgb(255 63 164 / 0.8);
 }
 
 html,
