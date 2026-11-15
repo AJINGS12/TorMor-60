@@ -1,6 +1,9 @@
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion, useAnimate } from 'framer-motion'
 import { useState } from 'react'
 import Counter from '../components/Counter'
+import DenyReasonPicker from '../components/DenyReasonPicker'
+import DocumentCard from '../components/DocumentCard'
+import { StampSlam } from '../components/Stamp'
 import DebugOverlay from '../components/DebugOverlay'
 import Desk from '../components/Desk'
 import QuestionChips from '../components/QuestionChips'
@@ -13,6 +16,7 @@ import Timer from '../components/Timer'
 import { rules } from '../engine/rules'
 import { streakMultiplier } from '../engine/scoring'
 import { useText } from '../i18n/useText'
+import type { Traveller as TravellerData } from '../engine/types'
 import { selectIsLastRound, selectTraveller, useGameStore } from '../store/gameStore'
 
 const ui = rules.ui.game
@@ -78,6 +82,67 @@ function Backdrop() {
   )
 }
 
+function DecisionButtons() {
+  const { t } = useText()
+  const enabled = useGameStore((s) => s.phase === 'inspecting' && s.answeringId === null)
+  const decide = useGameStore((s) => s.decide)
+  const openDenyPicker = useGameStore((s) => s.openDenyPicker)
+  const base =
+    'min-h-16 w-36 rounded-2xl text-xl font-extrabold tracking-wider uppercase transition disabled:cursor-not-allowed disabled:opacity-35 sm:w-44 sm:text-2xl'
+
+  return (
+    <div className="flex shrink-0 flex-col gap-3">
+      <motion.button
+        whileTap={enabled ? { scale: 0.94 } : undefined}
+        disabled={!enabled}
+        onClick={() => decide('APPROVE')}
+        className={`${base} bg-neon-green text-night-950 glow-green`}
+      >
+        ✔ {t(ui.approve)}
+      </motion.button>
+      <motion.button
+        whileTap={enabled ? { scale: 0.94 } : undefined}
+        disabled={!enabled}
+        onClick={openDenyPicker}
+        className={`${base} bg-neon-red text-white glow-red`}
+      >
+        ✖ {t(ui.deny)}
+      </motion.button>
+    </div>
+  )
+}
+
+/** Full-screen stamp moment: the passport flies up and the stamp slams onto it. */
+function StampOverlay({ traveller, onImpact }: { traveller: TravellerData; onImpact: () => void }) {
+  const phase = useGameStore((s) => s.phase)
+  const decision = useGameStore((s) => s.lastResult?.decision)
+  const stampFinished = useGameStore((s) => s.stampFinished)
+  const show = phase === 'stamping' && (decision === 'APPROVE' || decision === 'DENY')
+
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          className="fixed inset-0 z-50 grid place-items-center bg-black/65 p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: { duration: 0.25 } }}
+        >
+          <motion.div
+            className="relative w-full max-w-xl"
+            initial={{ y: 260, rotate: 6, scale: 0.7 }}
+            animate={{ y: 0, rotate: -1, scale: 1 }}
+            transition={{ type: 'spring', damping: 20, stiffness: 220 }}
+          >
+            <DocumentCard traveller={traveller} doc={{ slot: 'passport', docId: 'passport' }} />
+            <StampSlam decision={decision} onImpact={onImpact} onDone={stampFinished} />
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
+
 export default function Game() {
   const { t, date } = useText()
   const [rulebookOpen, setRulebookOpen] = useState(false)
@@ -86,11 +151,16 @@ export default function Game() {
   const isLastRound = useGameStore(selectIsLastRound)
   const travellerArrived = useGameStore((s) => s.travellerArrived)
   const nextTraveller = useGameStore((s) => s.nextTraveller)
+  const [scope, animate] = useAnimate()
+
+  const shake = () => {
+    animate(scope.current, { x: [0, -18, 15, -11, 8, -4, 0], y: [0, 9, -7, 5, -3, 0] }, { duration: 0.45, ease: 'easeOut' })
+  }
 
   if (!traveller) return null
 
   return (
-    <div className="flex h-dvh flex-col overflow-hidden bg-night-950">
+    <div ref={scope} className="flex h-dvh flex-col overflow-hidden bg-night-950">
       <TopBar onOpenRulebook={() => setRulebookOpen(true)} />
 
       <div className="flex min-h-0 flex-1">
@@ -122,14 +192,16 @@ export default function Game() {
               </span>
             </div>
             <div className="flex items-end gap-4">
-              <Desk traveller={traveller} />
-              {phase === 'result' && (
+              <Desk key={traveller.id} traveller={traveller} />
+              {phase === 'result' ? (
                 <button
                   onClick={nextTraveller}
                   className="h-14 shrink-0 rounded-xl bg-neon-cyan px-6 text-lg font-extrabold text-night-950 glow-cyan"
                 >
                   {t(isLastRound ? ui.finish : ui.next)}
                 </button>
+              ) : (
+                <DecisionButtons />
               )}
             </div>
           </Counter>
@@ -138,6 +210,8 @@ export default function Game() {
         <Rulebook open={rulebookOpen} onClose={() => setRulebookOpen(false)} />
       </div>
 
+      <DenyReasonPicker traveller={traveller} />
+      <StampOverlay traveller={traveller} onImpact={shake} />
       <DebugOverlay />
     </div>
   )

@@ -6,6 +6,7 @@ import type { Traveller } from '../engine/types'
 import { useText } from '../i18n/useText'
 import { useGameStore } from '../store/gameStore'
 import DocumentCard, { DocumentThumb } from './DocumentCard'
+import { StampMark } from './Stamp'
 
 const ui = rules.ui.game
 
@@ -15,6 +16,9 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
   const phase = useGameStore((s) => s.phase)
   const asked = useGameStore((s) => s.askedQuestionIds)
   const [zoomed, setZoomed] = useState<DeskSlot | null>(null)
+  const lastDecision = useGameStore((s) => s.lastResult?.decision)
+  // The passport shows its stamp once the slam animation has played.
+  const stamped = phase === 'result' && lastDecision && lastDecision !== 'TIMEOUT' ? lastDecision : null
 
   // Nothing is handed over until the traveller reaches the counter.
   const docs = phase === 'entering' ? [] : deskDocuments(traveller, asked)
@@ -38,9 +42,14 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
               transition={{ type: 'spring', damping: 18, stiffness: 220 }}
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.96 }}
-              className="h-28 w-40 shrink-0 cursor-zoom-in sm:w-44"
+              className="relative h-28 w-40 shrink-0 cursor-zoom-in sm:w-44"
             >
               <DocumentThumb traveller={traveller} doc={doc} />
+              {doc.slot === 'passport' && stamped && (
+                <div className="absolute right-1 bottom-2 -rotate-12">
+                  <StampMark decision={stamped} size="sm" />
+                </div>
+              )}
             </motion.button>
           ))}
         </AnimatePresence>
