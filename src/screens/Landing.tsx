@@ -111,8 +111,8 @@ export default function Landing() {
             transition={{ duration: 0.4, ease: 'easeOut' }}
           >
             {t(ui.logo)
-              .split(/(d+)/)
-              .map((part, i) => (/d/.test(part) ? <span key={i} className="text-brand">{part}</span> : part))}
+              .split(/(\d+)/)
+              .map((part, i) => (/\d/.test(part) ? <span key={i} className="text-brand">{part}</span> : part))}
           </motion.h1>
         </div>
 
