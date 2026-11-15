@@ -57,7 +57,7 @@ Light, clean, modern. Simple and intuitive.
 - **Typography:** Prompt (bundled, works offline), large sizes, readable at a glance from 1–2 m away at a booth. Thai text must render well.
 - **Documents** look like clean ID cards: white cards with a coloured header strip. Fictional designs only.
 - **Animations:** smooth and short. The stamp is still the hero moment: screen shake, ink splash, thunk sound.
-- **Sound:** generated with the Web Audio API (works offline). Countdown ticks in the final 10 seconds (higher pitch for the last 3). Mute toggle in the top bar.
+- **Sound:** generated with the Web Audio API (works offline): stamp thunk, correct chime, wrong buzz, and countdown ticks in the final 10 seconds (higher pitch for the last 3). All respect the mute toggle in the top bar.
 - Big touch targets (tablet-friendly). Minimum button height 48px.
 
 ## Content rules

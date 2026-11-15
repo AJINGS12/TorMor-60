@@ -8,6 +8,8 @@ import { rules } from '../engine/rules'
 import { isFired, rankFor } from '../engine/scoring'
 import { useText } from '../i18n/useText'
 import { useGameStore } from '../store/gameStore'
+import { playSfx } from '../store/soundStore'
+import { playThunk } from '../utils/sound'
 
 const ui = rules.ui.end
 const VERDICT_ICON = { correct: '✅', wrong: '❌', timeout: '⏰' } as const
@@ -79,7 +81,10 @@ export default function End() {
       <main className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center gap-7 px-5 pb-12">
         <BigStamp
           fired={fired}
-          onImpact={() => shake(scope.current, { x: [0, -16, 13, -9, 6, 0], y: [0, 8, -6, 4, 0] }, { duration: 0.45 })}
+          onImpact={() => {
+            playSfx(playThunk)
+            shake(scope.current, { x: [0, -16, 13, -9, 6, 0], y: [0, 8, -6, 4, 0] }, { duration: 0.45 })
+          }}
         />
 
         {/* Score + rank */}

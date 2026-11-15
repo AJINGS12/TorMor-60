@@ -1,8 +1,11 @@
 import { motion } from 'framer-motion'
+import { useEffect } from 'react'
 import { getQuestion, rules } from '../engine/rules'
 import type { RoundResult, Traveller } from '../engine/types'
 import { useText } from '../i18n/useText'
 import { selectIsLastRound, useGameStore } from '../store/gameStore'
+import { playSfx } from '../store/soundStore'
+import { playCorrect, playWrong } from '../utils/sound'
 import Headline from './Headline'
 
 const cr = rules.caseResult
@@ -32,6 +35,12 @@ export default function CaseResult({ traveller, result }: { traveller: Traveller
   const nextTraveller = useGameStore((s) => s.nextTraveller)
   const summary = useSummary(traveller, result)
   const points = result.breakdown.total
+
+  // Chime for a correct call; buzz for a wrong call or a timeout. Once per traveller.
+  const correct = result.outcome === 'correct'
+  useEffect(() => {
+    playSfx(correct ? playCorrect : playWrong)
+  }, [result.travellerId, correct])
 
   return (
     <motion.div

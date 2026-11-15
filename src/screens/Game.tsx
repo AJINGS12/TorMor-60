@@ -21,6 +21,8 @@ import { streakMultiplier } from '../engine/scoring'
 import { useText } from '../i18n/useText'
 import type { Traveller as TravellerData } from '../engine/types'
 import { selectAllNeededAsked, selectTraveller, useGameStore } from '../store/gameStore'
+import { playSfx } from '../store/soundStore'
+import { playThunk } from '../utils/sound'
 
 const ui = rules.ui.game
 
@@ -154,7 +156,8 @@ export default function Game() {
   const travellerArrived = useGameStore((s) => s.travellerArrived)
   const [scope, animate] = useAnimate()
 
-  const shake = () => {
+  const onStampImpact = () => {
+    playSfx(playThunk)
     animate(scope.current, { x: [0, -18, 15, -11, 8, -4, 0], y: [0, 9, -7, 5, -3, 0] }, { duration: 0.45, ease: 'easeOut' })
   }
 
@@ -221,7 +224,7 @@ export default function Game() {
       </div>
 
       <DenyReasonPicker traveller={traveller} />
-      <StampOverlay traveller={traveller} onImpact={shake} />
+      <StampOverlay traveller={traveller} onImpact={onStampImpact} />
       <DebugOverlay />
     </div>
     </div>

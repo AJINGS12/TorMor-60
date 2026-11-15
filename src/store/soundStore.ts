@@ -28,3 +28,8 @@ export const useSoundStore = create<SoundState>()((set, get) => ({
     set({ muted })
   },
 }))
+
+/** Plays a sound effect unless the player has muted the game. */
+export function playSfx(play: () => void): void {
+  if (!useSoundStore.getState().muted) play()
+}
