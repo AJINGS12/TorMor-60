@@ -3,6 +3,8 @@ import { useState } from 'react'
 import Counter from '../components/Counter'
 import DebugOverlay from '../components/DebugOverlay'
 import Desk from '../components/Desk'
+import QuestionChips from '../components/QuestionChips'
+import SpeechBubble from '../components/SpeechBubble'
 import Traveller from '../components/Traveller'
 import LanguageToggle from '../components/LanguageToggle'
 import Rulebook from '../components/Rulebook'
@@ -94,9 +96,9 @@ export default function Game() {
       <div className="flex min-h-0 flex-1">
         <main className="flex min-w-0 flex-1 flex-col">
           {/* Traveller area */}
-          <section className="relative min-h-0 flex-1 overflow-hidden">
+          <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
             <Backdrop />
-            <div className="absolute inset-0 pt-14">
+            <div className="relative min-h-0 flex-1 pt-14">
               <AnimatePresence mode="wait">
                 <Traveller
                   key={traveller.id}
@@ -105,7 +107,11 @@ export default function Game() {
                   onArrived={travellerArrived}
                 />
               </AnimatePresence>
+              <div className="absolute top-[22%] left-[calc(50%+4.5rem)] z-10">
+                <SpeechBubble traveller={traveller} />
+              </div>
             </div>
+            <QuestionChips />
           </section>
 
           {/* Officer's counter */}

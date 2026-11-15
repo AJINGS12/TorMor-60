@@ -153,7 +153,12 @@ export const useGameStore = create<GameState>()((set, get) => {
 
     askQuestion: (id) => {
       const s = get()
-      if (s.phase !== 'inspecting' || s.answeringId || s.askedQuestionIds.includes(id)) return
+      if (s.phase !== 'inspecting' || s.answeringId) return
+      // Re-asking just shows the earlier answer again, instantly.
+      if (s.askedQuestionIds.includes(id)) {
+        set({ lastAnsweredId: id })
+        return
+      }
       set({ answeringId: id })
       clearTimeout(answerTimer)
       answerTimer = setTimeout(() => {
