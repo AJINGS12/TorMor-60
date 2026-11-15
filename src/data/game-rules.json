@@ -22,6 +22,8 @@
     "questionAnswerDelaySec": 2,
     "strikesToFail": 3,
     "timerWarningSec": 10,
+    "idleResetSec": 90,
+    "leaderboardSize": 10,
     "flawChance": 0.5,
     "maxFlawsPerTraveller": 1,
     "gameDate": "runtime_today",
@@ -381,11 +383,20 @@
     "landing": {
       "title":    { "en": "BORDER CONTROL", "th": "ด่านตรวจคนเข้าเมือง" },
       "tagline":  { "en": "Can you keep the border safe?", "th": "คุณจะรักษาด่านให้ปลอดภัยได้ไหม?" },
-      "cta":      { "en": "Become an Immigration Officer", "th": "มาเป็นเจ้าหน้าที่ตรวจคนเข้าเมือง" }
+      "cta":      { "en": "Become an Immigration Officer", "th": "มาเป็นเจ้าหน้าที่ตรวจคนเข้าเมือง" },
+      "logo":       { "en": "TOR MOR 60", "th": "TOR MOR 60" },
+      "logoBadge":  { "en": "ตม. 60", "th": "ตม. 60" },
+      "subtitle":   { "en": "Be the Immigration Officer for 60 seconds", "th": "มาเป็นเจ้าหน้าที่ตรวจคนเข้าเมือง 60 วินาที" },
+      "topOfficers": { "en": "Top officers", "th": "เจ้าหน้าที่ยอดฝีมือ" },
+      "byNitify":   { "en": "by Nitify", "th": "โดย Nitify" }
     },
     "nickname": {
       "label":       { "en": "Officer name", "th": "ชื่อเจ้าหน้าที่" },
       "placeholder": { "en": "Enter your nickname", "th": "ใส่ชื่อเล่นของคุณ" },
+      "title":       { "en": "Who's on duty today?", "th": "วันนี้ใครเข้าเวร?" },
+      "continue":    { "en": "Continue", "th": "ต่อไป" },
+      "hint":        { "en": "Press Enter to continue", "th": "กด Enter เพื่อไปต่อ" },
+      "blocked":     { "en": "Please choose a different name.", "th": "กรุณาเลือกชื่ออื่นนะ" },
       "maxLength": 16
     },
     "rules": {
@@ -406,7 +417,8 @@
         { "en": "Nigeria: visa required for all visits", "th": "ไนจีเรีย: ต้องมีวีซ่าทุกกรณี" },
         { "en": "Yellow fever certificate if from or via: Nigeria, Brazil, Kenya, Ethiopia", "th": "ต้องมีใบรับรองไข้เหลืองถ้ามาจากหรือผ่าน: ไนจีเรีย บราซิล เคนยา เอธิโอเปีย" }
       ],
-      "start": { "en": "Start Shift", "th": "เริ่มเข้าเวร" }
+      "start": { "en": "Start Shift", "th": "เริ่มเข้าเวร" },
+      "exampleTitle": { "en": "How it works", "th": "เล่นยังไง" }
     },
     "game": {
       "approve": { "en": "APPROVED", "th": "อนุมัติ" },
@@ -453,10 +465,23 @@
       "complete":  { "en": "SHIFT COMPLETE", "th": "จบเวรแล้ว!" },
       "playAgain": { "en": "Play again", "th": "เล่นอีกครั้ง" },
       "leaderboard": { "en": "Leaderboard", "th": "ตารางคะแนน" },
+      "yourScore": { "en": "Your score", "th": "คะแนนของคุณ" },
+      "yourRank":  { "en": "Rank", "th": "ยศ" },
+      "summary":   { "en": "Your shift", "th": "สรุปเวรของคุณ" },
       "nitifyCta": {
         "en": "Real foreigners in Thailand deal with these rules every day. Nitify helps them get it right.",
         "th": "ชาวต่างชาติในไทยต้องเจอกฎเหล่านี้ทุกวัน Nitify ช่วยให้พวกเขาทำได้ถูกต้อง"
       }
+    },
+    "leaderboard": {
+      "officer":      { "en": "Officer", "th": "เจ้าหน้าที่" },
+      "score":        { "en": "Score", "th": "คะแนน" },
+      "rank":         { "en": "Rank", "th": "ยศ" },
+      "time":         { "en": "Time", "th": "เวลา" },
+      "you":          { "en": "You", "th": "คุณ" },
+      "empty":        { "en": "No scores yet — be the first!", "th": "ยังไม่มีคะแนน มาเป็นคนแรกกันเลย!" },
+      "resetConfirm": { "en": "Clear the leaderboard? This can't be undone.", "th": "ล้างตารางคะแนนทั้งหมด? ย้อนกลับไม่ได้นะ" },
+      "resetYes":     { "en": "Clear", "th": "ล้าง" }
     }
   }
 }

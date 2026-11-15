@@ -3,6 +3,7 @@ import { generateShift } from '../engine/generateTraveller'
 import { evaluate } from '../engine/requirements'
 import { config, rules } from '../engine/rules'
 import { isFired } from '../engine/scoring'
+import { useLeaderboard } from './leaderboard'
 import type { Decision, DenyReasonId, LocalizedText, QuestionId, RoundResult, Traveller } from '../engine/types'
 
 export const SCREENS = ['landing', 'nickname', 'rules', 'game', 'end'] as const
@@ -17,6 +18,9 @@ export type Phase = 'idle' | 'entering' | 'inspecting' | 'choosingReason' | 'sta
 
 interface GameState {
   screen: Screen
+  nickname: string
+  /** Leaderboard entry id saved for the shift that just ended (to highlight it). */
+  lastEntryId: string | null
   phase: Phase
   travellers: Traveller[]
   index: number
@@ -36,6 +40,7 @@ interface GameState {
   streak: number
   strikes: number
 
+  setNickname: (nickname: string) => void
   setScreen: (screen: Screen) => void
   nextScreen: () => void
   reset: () => void
@@ -77,6 +82,7 @@ const gameReset = {
   score: 0,
   streak: 0,
   strikes: 0,
+  lastEntryId: null,
 } satisfies Partial<GameState>
 
 function pickHeadline(result: RoundResult): LocalizedText | null {
@@ -126,16 +132,19 @@ export const useGameStore = create<GameState>()((set, get) => {
 
   return {
     screen: 'landing',
+    nickname: '',
     ...gameReset,
 
+    setNickname: (nickname) => set({ nickname }),
     setScreen: goTo,
     nextScreen: () => {
       const i = SCREENS.indexOf(get().screen)
       goTo(SCREENS[Math.min(i + 1, SCREENS.length - 1)])
     },
+    /** Back to Landing with a clean slate (also used by the idle reset). */
     reset: () => {
       clearTimers()
-      set({ ...gameReset, screen: 'landing' })
+      set({ ...gameReset, nickname: '', screen: 'landing' })
     },
 
     startGame: () => {
@@ -190,7 +199,8 @@ export const useGameStore = create<GameState>()((set, get) => {
       if (s.phase !== 'result') return
       if (selectIsLastRound(s)) {
         clearTimers()
-        set({ screen: 'end', phase: 'idle' })
+        const lastEntryId = useLeaderboard.getState().add(s.nickname, s.score)
+        set({ screen: 'end', phase: 'idle', lastEntryId })
         return
       }
       set({ ...roundReset, index: s.index + 1, phase: 'entering' })
