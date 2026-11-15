@@ -35,8 +35,8 @@ export default function Traveller({
       onAnimationComplete={(definition) => definition === 'visible' && onArrived()}
       className="flex h-full flex-col items-center justify-end"
     >
-      {/* Tag above the head */}
-      <div className="mb-2 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-base font-semibold whitespace-nowrap shadow-soft sm:text-lg">
+      {/* Tag above the head: never shrinks, so it is always fully visible. */}
+      <div className="mb-2 flex shrink-0 items-center gap-2 rounded-full bg-white px-4 py-2 text-base font-semibold whitespace-nowrap shadow-soft sm:text-lg">
         <Flag code={traveller.country.code} className="h-5" />
         <span className="text-ink">{t(traveller.country)}</span>
         <span className="text-brand">· {t(persona)}</span>
@@ -45,7 +45,8 @@ export default function Traveller({
       <motion.div
         animate={isWalking ? { y: [0, -8, 0], rotate: [-2, 2, -2] } : { y: [0, -2, 0], rotate: 0 }}
         transition={{ duration: isWalking ? 0.45 : 3, repeat: Infinity, ease: 'easeInOut' }}
-        className="h-[min(78%,300px)] min-h-32"
+        // Avatar takes whatever height is left (up to 300px) and shrinks on short screens.
+        className="flex min-h-0 max-h-[300px] w-full flex-1 justify-center"
       >
         <Avatar seed={traveller.avatarSeed} purpose={traveller.purpose} className="h-full w-auto drop-shadow-[0_10px_16px_rgb(17_24_39/0.12)]" />
       </motion.div>

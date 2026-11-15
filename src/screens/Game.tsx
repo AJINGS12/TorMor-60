@@ -64,7 +64,6 @@ function TopBar({ onOpenRulebook }: { onOpenRulebook: () => void }) {
 
 /** Bright airport hall behind the traveller. */
 function Backdrop() {
-  const { t } = useText()
   return (
     <div aria-hidden className="absolute inset-0 overflow-hidden bg-[linear-gradient(180deg,#eaf1ff_0%,#f7f8fa_70%)]">
       {/* Big window onto the apron */}
@@ -74,10 +73,6 @@ function Backdrop() {
         <div className="absolute inset-y-0 left-2/3 w-1.5 bg-white/70" />
         <div className="absolute top-[28%] left-[12%] h-6 w-24 rounded-full bg-white/80" />
         <div className="absolute top-[18%] right-[14%] h-5 w-16 rounded-full bg-white/70" />
-      </div>
-      {/* Sign */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 rounded-full bg-white px-5 py-1.5 text-sm font-extrabold tracking-[0.25em] whitespace-nowrap text-brand shadow-soft sm:text-base">
-        {t(rules.ui.landing.logo)}
       </div>
     </div>
   )
@@ -175,7 +170,13 @@ export default function Game() {
           <section className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
             <Backdrop />
             <Countdown />
-            <div className="relative min-h-0 flex-1 pt-16">
+            {/* Airport sign in its own row, so it never overlaps the traveller or the tag */}
+            <div className="relative z-10 flex shrink-0 justify-center pt-3">
+              <span className="rounded-full bg-white px-4 py-1 text-xs font-extrabold tracking-[0.25em] whitespace-nowrap text-brand shadow-soft">
+                {t(rules.ui.landing.logo)}
+              </span>
+            </div>
+            <div className="relative min-h-0 flex-1 pt-3">
               <AnimatePresence mode="wait">
                 <Traveller
                   key={traveller.id}
