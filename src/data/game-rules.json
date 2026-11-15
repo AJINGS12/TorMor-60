@@ -21,6 +21,7 @@
     "timePerTravellerSec": 60,
     "questionAnswerDelaySec": 2,
     "strikesToFail": 3,
+    "timerWarningSec": 10,
     "flawChance": 0.5,
     "maxFlawsPerTraveller": 1,
     "gameDate": "runtime_today",
@@ -372,7 +373,8 @@
       "wrong":   { "icon": "❌", "en": "Wrong call", "th": "ตัดสินผิด" },
       "timeout": { "icon": "⏰", "en": "Time's up",  "th": "หมดเวลา" }
     },
-    "missedPrefix": { "en": " Missed: ", "th": " ที่พลาดไป: " }
+    "missedPrefix": { "en": " Missed: ", "th": " ที่พลาดไป: " },
+    "noFlawExplain": { "en": "All documents were in order.", "th": "เอกสารครบถ้วนและถูกต้อง" }
   },
 
   "ui": {
@@ -411,7 +413,40 @@
       "deny":    { "en": "DENIED",   "th": "ปฏิเสธ" },
       "chooseReason": { "en": "Why are you denying entry?", "th": "ทำไมคุณถึงปฏิเสธการเข้าเมือง?" },
       "strikes": { "en": "Strikes", "th": "ความผิดพลาด" },
-      "next":    { "en": "Next traveller", "th": "ผู้เดินทางคนถัดไป" }
+      "next":    { "en": "Next traveller", "th": "ผู้เดินทางคนถัดไป" },
+      "finish":  { "en": "See results", "th": "ดูผลลัพธ์" },
+      "score":   { "en": "Score", "th": "คะแนน" },
+      "travellerCount": { "en": "Traveller {n}/{total}", "th": "ผู้เดินทาง {n}/{total}" },
+      "seconds": { "en": "{seconds}s", "th": "{seconds} วิ" },
+      "streak":  { "en": "Streak ×{multiplier}", "th": "ต่อเนื่อง ×{multiplier}" },
+      "today":   { "en": "Today: {date}", "th": "วันนี้: {date}" },
+      "rulebook": { "en": "Rulebook", "th": "คู่มือกฎ" },
+      "askQuestion": { "en": "Ask the traveller", "th": "ถามผู้เดินทาง" },
+      "answering": { "en": "Traveller is answering…", "th": "ผู้เดินทางกำลังตอบ…" },
+      "desk":    { "en": "Your desk", "th": "โต๊ะของคุณ" },
+      "tapToZoom": { "en": "Tap a document to inspect it", "th": "แตะเอกสารเพื่อตรวจดู" },
+      "close":   { "en": "Close", "th": "ปิด" },
+      "cancel":  { "en": "Cancel", "th": "ยกเลิก" },
+      "points":  { "en": "+{points} pts", "th": "+{points} คะแนน" },
+      "fields": {
+        "name":            { "en": "Name", "th": "ชื่อ-นามสกุล" },
+        "nationality":     { "en": "Nationality", "th": "สัญชาติ" },
+        "passportNo":      { "en": "Passport No.", "th": "เลขที่หนังสือเดินทาง" },
+        "dateOfBirth":     { "en": "Date of birth", "th": "วันเกิด" },
+        "expiry":          { "en": "Date of expiry", "th": "วันหมดอายุ" },
+        "arrivalDate":     { "en": "Arrival date", "th": "วันที่เดินทางมาถึง" },
+        "stayDays":        { "en": "Length of stay", "th": "ระยะเวลาพำนัก" },
+        "days":            { "en": "{days} days", "th": "{days} วัน" },
+        "purpose":         { "en": "Purpose", "th": "จุดประสงค์" },
+        "flightFrom":      { "en": "Flying from", "th": "เดินทางจาก" },
+        "transit":         { "en": "Transit", "th": "ต่อเครื่อง" },
+        "none":            { "en": "None", "th": "ไม่มี" },
+        "departureDate":   { "en": "Departure date", "th": "วันเดินทางออก" },
+        "destination":     { "en": "Destination", "th": "ปลายทาง" },
+        "visaType":        { "en": "Visa type", "th": "ประเภทวีซ่า" },
+        "validUntil":      { "en": "Valid until", "th": "ใช้ได้ถึง" },
+        "vaccinationDate": { "en": "Vaccinated on", "th": "วันที่ฉีดวัคซีน" }
+      }
     },
     "end": {
       "fired":     { "en": "YOU'RE FIRED!", "th": "คุณโดนไล่ออก!" },
