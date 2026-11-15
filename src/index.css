@@ -35,6 +35,12 @@
 
   /* Gentle "do this next" pulse; colour comes from --hint (defaults to brand). */
   --animate-hint: hint 1.8s ease-in-out infinite;
+  /* Glow-only variant for elements that already animate their transform (e.g. desk cards). */
+  --animate-hint-glow: hint-glow 1.8s ease-in-out infinite;
+  @keyframes hint-glow {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--hint, #1e3a8a) 45%, transparent); }
+    50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--hint, #1e3a8a) 0%, transparent); }
+  }
   @keyframes hint {
     0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--hint, #1e3a8a) 45%, transparent); transform: scale(1); }
     50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--hint, #1e3a8a) 0%, transparent); transform: scale(1.03); }

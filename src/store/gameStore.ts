@@ -19,6 +19,8 @@ export type Phase = 'idle' | 'entering' | 'inspecting' | 'choosingReason' | 'sta
 interface GameState {
   screen: Screen
   nickname: string
+  /** Desk documents this player has opened at least once (hides their "tap me" hint). */
+  openedDocs: string[]
   /** Leaderboard entry id saved for the shift that just ended (to highlight it). */
   lastEntryId: string | null
   phase: Phase
@@ -41,6 +43,7 @@ interface GameState {
   strikes: number
 
   setNickname: (nickname: string) => void
+  markDocOpened: (slot: string) => void
   setScreen: (screen: Screen) => void
   nextScreen: () => void
   reset: () => void
@@ -135,8 +138,12 @@ export const useGameStore = create<GameState>()((set, get) => {
   return {
     screen: 'landing',
     nickname: '',
+    openedDocs: [],
     ...gameReset,
 
+    markDocOpened: (slot) => {
+      if (!get().openedDocs.includes(slot)) set({ openedDocs: [...get().openedDocs, slot] })
+    },
     setNickname: (nickname) => set({ nickname }),
     setScreen: goTo,
     nextScreen: () => {
@@ -146,12 +153,12 @@ export const useGameStore = create<GameState>()((set, get) => {
     /** Back to Landing with a clean slate (also used by the idle reset). */
     reset: () => {
       clearTimers()
-      set({ ...gameReset, nickname: '', screen: 'landing' })
+      set({ ...gameReset, nickname: '', openedDocs: [], screen: 'landing' })
     },
 
     newPlayer: () => {
       clearTimers()
-      set({ ...gameReset, nickname: '', screen: 'nickname' })
+      set({ ...gameReset, nickname: '', openedDocs: [], screen: 'nickname' })
     },
 
     startGame: () => {

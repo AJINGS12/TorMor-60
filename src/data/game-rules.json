@@ -472,6 +472,10 @@
       "answering": { "en": "Traveller is answering…", "th": "ผู้เดินทางกำลังตอบ…" },
       "desk":    { "en": "Your desk", "th": "โต๊ะของคุณ" },
       "tapToZoom": { "en": "Tap a document to inspect it", "th": "แตะเอกสารเพื่อตรวจดู" },
+      "docHints": {
+        "passport": { "en": "Tap to check expiry date", "th": "แตะเพื่อดูวันหมดอายุ" },
+        "tdac":     { "en": "Tap to check the name", "th": "แตะเพื่อตรวจชื่อ" }
+      },
       "close":   { "en": "Close", "th": "ปิด" },
       "cancel":  { "en": "Cancel", "th": "ยกเลิก" },
       "points":  { "en": "+{points} pts", "th": "+{points} คะแนน" },

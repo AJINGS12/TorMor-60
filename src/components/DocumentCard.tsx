@@ -158,17 +158,20 @@ export default function DocumentCard({ traveller, doc, children }: { traveller: 
 }
 
 /** Small ID card on the desk. */
-export function DocumentThumb({ traveller, doc }: { traveller: Traveller; doc: DeskDocument }) {
+export function DocumentThumb({ traveller, doc, hint }: { traveller: Traveller; doc: DeskDocument; hint?: string }) {
   const { t } = useText()
   const style = STYLE[doc.docId]
   const name = doc.slot === 'passport' ? traveller.documents.passport.name : traveller.documents[doc.slot]?.name
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden rounded-xl bg-white text-left shadow-soft">
+    <div className={`flex h-full w-full flex-col overflow-hidden rounded-xl bg-white text-left shadow-soft ${hint ? 'animate-hint-glow' : ''}`}>
       <div className="flex items-center gap-1.5 px-3 py-1.5 text-xs leading-tight font-bold text-white" style={{ background: style.strip }}>
         <span className="text-base">{style.icon}</span>
         <span className="line-clamp-1">{t(rules.documents[doc.docId])}</span>
       </div>
-      <div className="flex flex-1 items-end px-3 pb-2.5">
+      <div className="flex flex-1 flex-col justify-end gap-1 px-3 pb-2.5">
+        {hint && (
+          <span className="self-start rounded-full bg-brand px-2 py-0.5 text-[11px] leading-tight font-semibold text-white">👆 {hint}</span>
+        )}
         <span className="truncate text-sm font-semibold text-ink">{name}</span>
       </div>
     </div>

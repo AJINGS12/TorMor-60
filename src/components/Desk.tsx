@@ -16,6 +16,14 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
   const phase = useGameStore((s) => s.phase)
   const asked = useGameStore((s) => s.askedQuestionIds)
   const [zoomed, setZoomed] = useState<DeskSlot | null>(null)
+  const openedDocs = useGameStore((s) => s.openedDocs)
+  const markDocOpened = useGameStore((s) => s.markDocOpened)
+  const hints = ui.docHints as Record<string, { en: string; th: string } | undefined>
+  /** "Tap me" hint for documents listed in ui.game.docHints, until first opened. */
+  const hintFor = (slot: DeskSlot) => {
+    const h = hints[slot]
+    return h && !openedDocs.includes(slot) && phase === 'inspecting' ? t(h) : undefined
+  }
   const lastDecision = useGameStore((s) => s.lastResult?.decision)
   // The passport shows its stamp once the slam animation has played.
   const stamped = phase === 'result' && lastDecision && lastDecision !== 'TIMEOUT' ? lastDecision : null
@@ -35,7 +43,10 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
             <motion.button
               key={`${traveller.id}-${doc.slot}`}
               layoutId={`${traveller.id}-${doc.slot}`}
-              onClick={() => setZoomed(doc.slot)}
+              onClick={() => {
+                setZoomed(doc.slot)
+                markDocOpened(doc.slot)
+              }}
               initial={{ y: -120, opacity: 0, rotate: -6 }}
               animate={{ y: 0, opacity: 1, rotate: i % 2 ? 1 : -1 }}
               exit={{ y: -140, opacity: 0 }}
@@ -44,7 +55,7 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
               whileTap={{ scale: 0.96 }}
               className="relative h-28 w-40 shrink-0 cursor-zoom-in sm:w-44"
             >
-              <DocumentThumb traveller={traveller} doc={doc} />
+              <DocumentThumb traveller={traveller} doc={doc} hint={hintFor(doc.slot)} />
               {doc.slot === 'passport' && stamped && (
                 <div className="absolute top-1/2 right-1 -translate-y-1/2 -rotate-12">
                   <StampMark decision={stamped} size="sm" />
