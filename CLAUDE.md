@@ -54,7 +54,7 @@ Light, clean, modern. Simple and intuitive.
 - **Colours:** white / very light grey backgrounds (`#FFFFFF` / `#F7F8FA`), dark text (`#111827`), one primary accent: navy `#1E3A8A` (hover `#172554`, light tint `#E8EDF7`). Green is used **only** for APPROVED; red **only** for DENIED and strikes. No neon, no dark backgrounds.
 - **Style:** soft shadows, rounded corners (12–16px), plenty of white space. Few borders, low visual noise.
 - **One clear action per moment.** Highlight the next thing to do with a gentle pulse (e.g. question chips at the start of a traveller; the stamp buttons once all needed questions are asked).
-- **Typography:** Prompt (bundled, works offline), large sizes, readable at a glance from 1–2 m away at a booth. Thai text must render well.
+- **Typography:** Plus Jakarta Sans for English, Prompt for Thai (both bundled, works offline; stack `"Plus Jakarta Sans", "Prompt", sans-serif`), large sizes, readable at a glance from 1–2 m away at a booth. Thai text must render well.
 - **Documents** look like clean ID cards: white cards with a coloured header strip. Fictional designs only.
 - **Animations:** smooth and short. The stamp is still the hero moment: screen shake, ink splash, thunk sound.
 - **Sound:** generated with the Web Audio API (works offline): stamp thunk, correct chime, wrong buzz, and countdown ticks in the final 10 seconds (higher pitch for the last 3). All respect the mute toggle in the top bar.
