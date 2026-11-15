@@ -20,12 +20,12 @@ const STYLE: Record<string, { strip: string; icon: string }> = {
   school_letter: { strip: '#9a3412', icon: '🏫' },
 }
 
-function Field({ label, value }: { label: LocalizedText; value: ReactNode }) {
+function Field({ label, value, wrap = false }: { label: LocalizedText; value: ReactNode; wrap?: boolean }) {
   const { t } = useText()
   return (
     <div className="min-w-0">
       <div className="text-xs font-medium text-muted">{t(label)}</div>
-      <div className="truncate text-xl leading-tight font-semibold text-ink">{value}</div>
+      <div className={`${wrap ? 'break-words' : 'truncate'} text-xl leading-tight font-semibold text-ink`}>{value}</div>
     </div>
   )
 }
@@ -116,7 +116,7 @@ function Fields({ traveller, doc }: { traveller: Traveller; doc: DeskDocument })
       return (
         <div className="grid grid-cols-2 gap-x-4 gap-y-3">
           <div className="col-span-2">
-            <Field label={f.university} value={x.university} />
+            <Field label={f.university} value={x.university} wrap />
           </div>
           <div className="col-span-2">
             <Field label={f.name} value={x.name} />
