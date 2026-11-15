@@ -49,6 +49,8 @@ export interface Question extends LocalizedText {
   id: QuestionId
   /** Which traveller fact or document this question uncovers. */
   reveals: string
+  /** Optional condition: the question is only offered when it holds (e.g. "purpose == 'study'"). */
+  showWhen?: string
   /** Answer variants keyed by answer key (e.g. "default", "no_tdac"). */
   answers: Record<string, LocalizedText>
 }
@@ -115,6 +117,12 @@ export interface Visa {
   validUntil: ISODate
 }
 
+export interface SchoolLetter {
+  name: string
+  university: string
+  startDate: ISODate
+}
+
 export interface YellowFeverCert {
   name: string
   vaccinationDate: ISODate
@@ -127,6 +135,7 @@ export interface TravellerDocuments {
   return_ticket: ReturnTicket | null
   visa: Visa | null
   yellow_fever_cert: YellowFeverCert | null
+  school_letter: SchoolLetter | null
 }
 
 export interface TravellerAnswer {

@@ -57,7 +57,8 @@
     "tourist_visa":      { "en": "Tourist Visa (TR)",                 "th": "วีซ่าท่องเที่ยว (TR)",                 "alwaysOnDesk": false },
     "student_visa":      { "en": "Student Visa (Non-Immigrant ED)",   "th": "วีซ่านักเรียน (Non-Immigrant ED)",     "alwaysOnDesk": false },
     "work_visa":         { "en": "Work Visa (Non-Immigrant B)",       "th": "วีซ่าทำงาน (Non-Immigrant B)",         "alwaysOnDesk": false },
-    "yellow_fever_cert": { "en": "Yellow Fever Certificate",          "th": "ใบรับรองการฉีดวัคซีนไข้เหลือง",       "alwaysOnDesk": false }
+    "yellow_fever_cert": { "en": "Yellow Fever Certificate",          "th": "ใบรับรองการฉีดวัคซีนไข้เหลือง",       "alwaysOnDesk": false },
+    "school_letter":     { "en": "Acceptance Letter (University)",    "th": "จดหมายตอบรับจากมหาวิทยาลัย",          "alwaysOnDesk": false }
   },
 
   "purposes": {
@@ -83,6 +84,12 @@
     { "code": "QA", "en": "Qatar",     "th": "กาตาร์",              "flag": "🇶🇦" }
   ],
   "routeChance": { "direct": 0.5, "safeTransit": 0.25, "yellowFeverTransit": 0.25 },
+  "universities": [
+    "Bangkok International University",
+    "Chao Phraya Institute of Technology",
+    "Golden Orchid University",
+    "Andaman University of Arts & Sciences"
+  ],
 
   "countries": [
     {
@@ -158,6 +165,7 @@
   "requirementLogic": {
     "description": "Pseudo-rules the engine uses to compute required documents and necessary questions for each generated traveller.",
     "alwaysRequired": ["passport", "tdac", "return_ticket"],
+    "requiredDocumentsByPurpose": { "study": ["school_letter"] },
     "passportRule": "passport.expiry must be >= gameDate + 6 months",
     "visaRequiredWhen": [
       "country.visaExemptTourismDays == 0",
@@ -174,7 +182,8 @@
     "necessaryQuestions": {
       "always": ["q_purpose", "q_stay", "q_tdac", "q_ticket", "q_route"],
       "ifVisaRequired": ["q_visa"],
-      "ifYellowFeverRequired": ["q_yellow_fever"]
+      "ifYellowFeverRequired": ["q_yellow_fever"],
+      "byPurpose": { "study": ["q_study_docs"] }
     }
   },
 
@@ -248,6 +257,17 @@
         "default":         { "en": "Yes, here's my certificate.", "th": "มีครับ/ค่ะ นี่ใบรับรอง" },
         "not_needed":      { "en": "No... do I need one?", "th": "ไม่มี... ต้องใช้ด้วยเหรอ?" },
         "no_yellow_fever": { "en": "I didn't know I needed that.", "th": "ไม่รู้เลยว่าต้องใช้" }
+      }
+    },
+    {
+      "id": "q_study_docs",
+      "en": "Do you have any documents for your studies?",
+      "th": "คุณมีเอกสารยืนยันการศึกษาไหม?",
+      "reveals": "school_letter",
+      "showWhen": "purpose == 'study'",
+      "answers": {
+        "default":          { "en": "Yes, here's my acceptance letter.", "th": "มีครับ/ค่ะ นี่จดหมายตอบรับจากมหาวิทยาลัย" },
+        "no_school_letter": { "en": "I left it at home…", "th": "ลืมไว้ที่บ้าน…" }
       }
     }
   ],
@@ -333,6 +353,17 @@
         "en": "Travellers from or through yellow fever areas must show a vaccination certificate.",
         "th": "ผู้ที่เดินทางมาจากหรือผ่านพื้นที่ไข้เหลืองต้องแสดงใบรับรองการฉีดวัคซีน"
       }
+    },
+    {
+      "id": "no_school_letter",
+      "weight": 3,
+      "denyReason": "r_no_study_proof",
+      "applicableWhen": "purpose == 'study'",
+      "revealedBy": "q_study_docs",
+      "explain": {
+        "en": "Students must show an acceptance letter from their university.",
+        "th": "นักศึกษาต้องแสดงจดหมายตอบรับจากมหาวิทยาลัย"
+      }
     }
   ],
 
@@ -344,7 +375,8 @@
     { "id": "r_no_visa",          "en": "No visa",                       "th": "ไม่มีวีซ่า" },
     { "id": "r_wrong_visa",       "en": "Wrong visa for purpose",        "th": "วีซ่าไม่ตรงกับจุดประสงค์" },
     { "id": "r_stay_too_long",    "en": "Stay longer than 30 days",      "th": "อยู่นานเกิน 30 วัน" },
-    { "id": "r_no_yellow_fever",  "en": "No yellow fever certificate",   "th": "ไม่มีใบรับรองไข้เหลือง" }
+    { "id": "r_no_yellow_fever",  "en": "No yellow fever certificate",   "th": "ไม่มีใบรับรองไข้เหลือง" },
+    { "id": "r_no_study_proof",   "en": "No proof of study",             "th": "ไม่มีเอกสารยืนยันการศึกษา" }
   ],
   "denyReasonChoices": {
     "count": 4,
@@ -415,7 +447,8 @@
         { "en": "Visa-exempt countries: tourism only, max 30 days", "th": "ประเทศที่ยกเว้นวีซ่า: ท่องเที่ยวเท่านั้น ไม่เกิน 30 วัน" },
         { "en": "Study needs ED visa · Work needs Non-B visa", "th": "เรียนต้องใช้วีซ่า ED · ทำงานต้องใช้วีซ่า Non-B" },
         { "en": "Nigeria: visa required for all visits", "th": "ไนจีเรีย: ต้องมีวีซ่าทุกกรณี" },
-        { "en": "Yellow fever certificate if from or via: Nigeria, Brazil, Kenya, Ethiopia", "th": "ต้องมีใบรับรองไข้เหลืองถ้ามาจากหรือผ่าน: ไนจีเรีย บราซิล เคนยา เอธิโอเปีย" }
+        { "en": "Yellow fever certificate if from or via: Nigeria, Brazil, Kenya, Ethiopia", "th": "ต้องมีใบรับรองไข้เหลืองถ้ามาจากหรือผ่าน: ไนจีเรีย บราซิล เคนยา เอธิโอเปีย" },
+        { "en": "Students need an acceptance letter", "th": "นักศึกษาต้องมีจดหมายตอบรับจากมหาวิทยาลัย" }
       ],
       "start": { "en": "Start Shift", "th": "เริ่มเข้าเวร" },
       "exampleTitle": { "en": "How it works", "th": "เล่นยังไง" }
@@ -459,7 +492,9 @@
         "destination":     { "en": "Destination", "th": "ปลายทาง" },
         "visaType":        { "en": "Visa type", "th": "ประเภทวีซ่า" },
         "validUntil":      { "en": "Valid until", "th": "ใช้ได้ถึง" },
-        "vaccinationDate": { "en": "Vaccinated on", "th": "วันที่ฉีดวัคซีน" }
+        "vaccinationDate": { "en": "Vaccinated on", "th": "วันที่ฉีดวัคซีน" },
+        "university":      { "en": "University", "th": "มหาวิทยาลัย" },
+        "startDate":       { "en": "Start date", "th": "วันเริ่มเรียน" }
       }
     },
     "end": {

@@ -84,8 +84,13 @@ function validate() {
     check(p.stayDaysRange.length === 2 && p.stayDaysRange[0] <= p.stayDaysRange[1], `purposes.${id}.stayDaysRange is invalid`)
   }
   for (const d of logic.alwaysRequired) check(docs.has(d), `alwaysRequired "${d}" is not a document`)
+  for (const [purpose, list] of Object.entries(logic.requiredDocumentsByPurpose)) {
+    check(purpose in purposes, `requiredDocumentsByPurpose has unknown purpose "${purpose}"`)
+    for (const d of list) check(docs.has(d), `requiredDocumentsByPurpose.${purpose} "${d}" is not a document`)
+  }
   const nq = logic.necessaryQuestions
-  for (const q of [...nq.always, ...nq.ifVisaRequired, ...nq.ifYellowFeverRequired]) {
+  for (const purpose of Object.keys(nq.byPurpose)) check(purpose in purposes, `necessaryQuestions.byPurpose has unknown purpose "${purpose}"`)
+  for (const q of [...nq.always, ...nq.ifVisaRequired, ...nq.ifYellowFeverRequired, ...Object.values(nq.byPurpose).flat()]) {
     check(questionMap.has(q), `necessaryQuestions references unknown question "${q}"`)
   }
   for (const f of flaws) {
@@ -100,7 +105,9 @@ function validate() {
     check(route === 'direct' || transitCountriesFor(route).length > 0, `routeChance.${route} has no "${route}Countries" list`)
   }
   for (const c of countries) check(c.names.length > 0, `country ${c.code} has no names`)
-  for (const cond of [...logic.visaRequiredWhen, ...logic.yellowFeverRequiredWhen, ...flaws.map((f) => f.applicableWhen)]) {
+  check(data.universities.length > 0, 'universities list is empty')
+  const showWhens = questions.flatMap((q) => (q.showWhen ? [q.showWhen] : []))
+  for (const cond of [...logic.visaRequiredWhen, ...logic.yellowFeverRequiredWhen, ...flaws.map((f) => f.applicableWhen), ...showWhens]) {
     try {
       assertConditionParses(cond)
     } catch (e) {

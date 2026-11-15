@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
-import { questions, rules } from '../engine/rules'
+import { questionsFor } from '../engine/requirements'
+import { rules } from '../engine/rules'
 import { useText } from '../i18n/useText'
-import { useGameStore } from '../store/gameStore'
+import { selectTraveller, useGameStore } from '../store/gameStore'
 
 /** Question chips under the traveller. All chips lock while the traveller answers. */
 export default function QuestionChips() {
@@ -10,6 +11,9 @@ export default function QuestionChips() {
   const asked = useGameStore((s) => s.askedQuestionIds)
   const answeringId = useGameStore((s) => s.answeringId)
   const askQuestion = useGameStore((s) => s.askQuestion)
+  const traveller = useGameStore(selectTraveller)
+  // Some questions only apply to some travellers (e.g. proof of study for students).
+  const questions = traveller ? questionsFor(traveller) : []
   const locked = phase !== 'inspecting' || answeringId !== null
   // Next step hint: at the start of each traveller, the chips are the thing to tap.
   const hint = phase === 'inspecting' && asked.length === 0 && answeringId === null

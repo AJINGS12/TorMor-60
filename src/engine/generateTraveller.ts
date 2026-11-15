@@ -35,6 +35,7 @@ const PASSPORT_EXTRA_VALIDITY_DAYS: [number, number] = [1, 3650]
 const AGE_YEARS: [number, number] = [18, 70]
 const VISA_EXTRA_VALIDITY_DAYS: [number, number] = [30, 365]
 const VACCINATED_DAYS_AGO: [number, number] = [30, 3650]
+const STUDY_STARTS_IN_DAYS: [number, number] = [3, 30]
 
 export interface GenerateOptions {
   rng?: Rng
@@ -133,6 +134,9 @@ const FLAW_APPLIERS: Record<string, FlawApplier> = {
   no_yellow_fever: (t) => {
     t.documents.yellow_fever_cert = null
   },
+  no_school_letter: (t) => {
+    t.documents.school_letter = null
+  },
 }
 
 for (const f of flaws) {
@@ -159,6 +163,8 @@ function answerKey(q: Question, t: Draft, req: Requirements): string {
     case 'yellow_fever_cert':
       if (d.yellow_fever_cert) return 'default'
       return req.yellowFeverRequired ? 'no_yellow_fever' : 'not_needed'
+    case 'school_letter':
+      return d.school_letter ? 'default' : 'no_school_letter'
     default:
       return 'default'
   }
@@ -236,6 +242,9 @@ function buildValidDocuments(rng: Rng, t: TravellerFacts & { name: string }, req
       : null,
     yellow_fever_cert: req.yellowFeverRequired
       ? { name, vaccinationDate: addDays(gameDate, -randInt(rng, ...VACCINATED_DAYS_AGO)) }
+      : null,
+    school_letter: req.requiredDocuments.includes('school_letter')
+      ? { name, university: pick(rng, rules.universities), startDate: addDays(gameDate, randInt(rng, ...STUDY_STARTS_IN_DAYS)) }
       : null,
   }
 }

@@ -17,6 +17,7 @@ const STYLE: Record<string, { strip: string; icon: string }> = {
   student_visa: { strip: '#4f46e5', icon: '🎓' },
   work_visa: { strip: '#475569', icon: '💼' },
   yellow_fever_cert: { strip: '#ca8a04', icon: '💉' },
+  school_letter: { strip: '#9a3412', icon: '🏫' },
 }
 
 function Field({ label, value }: { label: LocalizedText; value: ReactNode }) {
@@ -107,6 +108,20 @@ function Fields({ traveller, doc }: { traveller: Traveller; doc: DeskDocument })
           </div>
           <Field label={f.visaType} value={t(rules.documents[x.type])} />
           <Field label={f.validUntil} value={date(x.validUntil)} />
+        </div>
+      )
+    }
+    case 'school_letter': {
+      const x = d.school_letter!
+      return (
+        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+          <div className="col-span-2">
+            <Field label={f.university} value={x.university} />
+          </div>
+          <div className="col-span-2">
+            <Field label={f.name} value={x.name} />
+          </div>
+          <Field label={f.startDate} value={date(x.startDate)} />
         </div>
       )
     }

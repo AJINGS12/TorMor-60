@@ -2,13 +2,14 @@
 // requirementLogic in game-rules.json.
 import { addMonths } from '../utils/dates.ts'
 import { evaluateCondition, type ConditionContext } from './conditions.ts'
-import { getFlaw, logic, passportValidityMonths, purposes, rules } from './rules.ts'
+import { getFlaw, logic, passportValidityMonths, purposes, questions, rules } from './rules.ts'
 import { scoreRound, isStrike } from './scoring.ts'
 import type {
   DecisionInput,
   DenyReasonId,
   DocumentId,
   Flaw,
+  Question,
   QuestionId,
   Requirements,
   RoundResult,
@@ -20,6 +21,7 @@ import type {
 export type TravellerFacts = Pick<Traveller, 'country' | 'purpose' | 'stayDays' | 'route' | 'gameDate'>
 
 const YELLOW_FEVER_DOC: DocumentId = 'yellow_fever_cert'
+const SCHOOL_LETTER_DOC: DocumentId = 'school_letter'
 
 /** Flaw IDs that the document check attributes violations to. */
 const FLAW = {
@@ -32,6 +34,7 @@ const FLAW = {
   wrongVisa: 'wrong_visa',
   stayExceedsExemption: 'stay_exceeds_exemption',
   noYellowFever: 'no_yellow_fever',
+  noSchoolLetter: 'no_school_letter',
 } as const
 Object.values(FLAW).forEach(getFlaw) // throws at load if the JSON drops one
 
@@ -50,6 +53,17 @@ function visaRequiredFor(ctx: ConditionContext): boolean {
   return logic.visaRequiredWhen.some((cond) => evaluateCondition(cond, ctx))
 }
 
+/** Looks up a purpose-specific list (e.g. requiredDocumentsByPurpose.study), empty if none. */
+function byPurpose<T extends string>(map: Record<string, string[]>, purpose: string): T[] {
+  return (map[purpose] ?? []) as T[]
+}
+
+/** Questions offered to this traveller (those without showWhen, or whose showWhen holds). */
+export function questionsFor(t: TravellerFacts): Question[] {
+  const ctx = factsContext(t)
+  return questions.filter((q) => !q.showWhen || evaluateCondition(q.showWhen, ctx))
+}
+
 export function getRequirements(t: TravellerFacts): Requirements {
   const ctx = factsContext(t)
   const visaRequired = visaRequiredFor(ctx)
@@ -61,12 +75,14 @@ export function getRequirements(t: TravellerFacts): Requirements {
   const requiredDocuments = [...logic.alwaysRequired] as DocumentId[]
   if (visaDocument) requiredDocuments.push(visaDocument)
   if (yellowFeverRequired) requiredDocuments.push(YELLOW_FEVER_DOC)
+  requiredDocuments.push(...byPurpose<DocumentId>(logic.requiredDocumentsByPurpose, t.purpose))
 
   const nq = logic.necessaryQuestions
   const necessaryQuestionIds: QuestionId[] = [
     ...nq.always,
     ...(visaRequired ? nq.ifVisaRequired : []),
     ...(yellowFeverRequired ? nq.ifYellowFeverRequired : []),
+    ...byPurpose<QuestionId>(nq.byPurpose, t.purpose),
   ]
 
   return {
@@ -113,6 +129,8 @@ export function findViolations(t: Traveller): Violation[] {
   }
 
   if (req.yellowFeverRequired && !d.yellow_fever_cert) add(FLAW.noYellowFever)
+
+  if (req.requiredDocuments.includes(SCHOOL_LETTER_DOC) && !d.school_letter) add(FLAW.noSchoolLetter)
 
   return found.map((flawId) => ({ flawId, denyReasonId: getFlaw(flawId).denyReason }))
 }

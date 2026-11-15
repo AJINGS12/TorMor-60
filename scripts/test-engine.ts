@@ -2,7 +2,7 @@
 // Generates travellers and checks that valid ones evaluate as APPROVE and
 // flawed ones as DENY with the flaw's deny reason.
 import { generateShift, generateTraveller } from '../src/engine/generateTraveller.ts'
-import { evaluate, findViolations, getRequirements } from '../src/engine/requirements.ts'
+import { evaluate, findViolations, getRequirements, questionsFor } from '../src/engine/requirements.ts'
 import { flaws, questions, rules } from '../src/engine/rules.ts'
 import { rankFor } from '../src/engine/scoring.ts'
 import { createRng } from '../src/utils/random.ts'
@@ -33,6 +33,17 @@ for (let i = 0; i < COUNT; i++) {
   byFlaw.set(t.flaw?.id ?? '(none)', (byFlaw.get(t.flaw?.id ?? '(none)') ?? 0) + 1)
 
   const violations = findViolations(t)
+
+  // Every needed question must be one the player can actually ask.
+  const offered = questionsFor(t).map((q) => q.id)
+  const hidden = all.filter((q) => !offered.includes(q))
+  if (hidden.length) fail(t, `necessary questions not offered: ${hidden.join(', ')}`)
+  // Students: acceptance letter required and asked about; nobody else sees that question.
+  const isStudy = t.purpose === 'study'
+  if (isStudy !== req.requiredDocuments.includes('school_letter')) fail(t, 'school_letter requirement does not match purpose')
+  if (isStudy !== offered.includes('q_study_docs')) fail(t, 'q_study_docs visibility does not match purpose')
+  if (isStudy !== all.includes('q_study_docs')) fail(t, 'q_study_docs necessity does not match purpose')
+  if (isStudy && !t.flaw && !t.documents.school_letter) fail(t, 'valid student has no acceptance letter')
 
   if (!t.flaw) {
     if (violations.length) fail(t, `valid traveller has violations: ${violations.map((v) => v.flawId).join(', ')}`)
