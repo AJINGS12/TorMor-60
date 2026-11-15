@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import type { ComponentType } from 'react'
+import IdleReset from './components/IdleReset'
 import { LanguageProvider } from './i18n/LanguageContext'
 import { useGameStore, type Screen } from './store/gameStore'
 import Landing from './screens/Landing'
@@ -22,6 +23,7 @@ export default function App() {
 
   return (
     <LanguageProvider>
+      <IdleReset />
       <AnimatePresence mode="wait">
         <motion.div
           key={screen}
