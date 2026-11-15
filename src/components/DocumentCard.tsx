@@ -8,23 +8,23 @@ import Flag from './Flag'
 
 const f = rules.ui.game.fields
 
-/** Card colours per document type. Fictional designs, not real ID layouts. */
-const STYLE: Record<string, { card: string; title: string; icon: string }> = {
-  passport: { card: 'bg-[linear-gradient(135deg,#1e2a78,#2b1660)] text-white ring-neon-amber/60', title: 'text-neon-amber', icon: '🛂' },
-  tdac: { card: 'bg-[linear-gradient(135deg,#e0fbff,#b8f1ff)] text-slate-900 ring-neon-cyan', title: 'text-cyan-700', icon: '📱' },
-  return_ticket: { card: 'bg-white text-slate-900 ring-slate-300', title: 'text-pink-600', icon: '🎫' },
-  tourist_visa: { card: 'bg-[linear-gradient(135deg,#dcfce7,#bbf7d0)] text-slate-900 ring-emerald-400', title: 'text-emerald-700', icon: '🏖️' },
-  student_visa: { card: 'bg-[linear-gradient(135deg,#ede9fe,#ddd6fe)] text-slate-900 ring-violet-400', title: 'text-violet-700', icon: '🎓' },
-  work_visa: { card: 'bg-[linear-gradient(135deg,#ffedd5,#fed7aa)] text-slate-900 ring-orange-400', title: 'text-orange-700', icon: '💼' },
-  yellow_fever_cert: { card: 'bg-[linear-gradient(135deg,#fef9c3,#fde047)] text-slate-900 ring-yellow-500', title: 'text-yellow-800', icon: '💉' },
+/** Header strip colour + icon per document type. Fictional designs, not real ID layouts. */
+const STYLE: Record<string, { strip: string; icon: string }> = {
+  passport: { strip: '#1e3a8a', icon: '🛂' },
+  tdac: { strip: '#0284c7', icon: '📱' },
+  return_ticket: { strip: '#7c3aed', icon: '🎫' },
+  tourist_visa: { strip: '#ea580c', icon: '🏖️' },
+  student_visa: { strip: '#4f46e5', icon: '🎓' },
+  work_visa: { strip: '#475569', icon: '💼' },
+  yellow_fever_cert: { strip: '#ca8a04', icon: '💉' },
 }
 
 function Field({ label, value }: { label: LocalizedText; value: ReactNode }) {
   const { t } = useText()
   return (
     <div className="min-w-0">
-      <div className="text-[11px] font-semibold tracking-wider uppercase opacity-60">{t(label)}</div>
-      <div className="truncate text-lg leading-tight font-semibold">{value}</div>
+      <div className="text-xs font-medium text-muted">{t(label)}</div>
+      <div className="truncate text-xl leading-tight font-semibold text-ink">{value}</div>
     </div>
   )
 }
@@ -55,8 +55,8 @@ function Fields({ traveller, doc }: { traveller: Traveller; doc: DeskDocument })
       const p = d.passport
       return (
         <div className="flex gap-4">
-          <div className="h-28 w-22 shrink-0 overflow-hidden rounded-md bg-slate-200 ring-2 ring-white/40">
-            <Avatar seed={traveller.avatarSeed} purpose={traveller.purpose} className="-mt-1 h-40 w-auto -translate-x-3" />
+          <div className="h-32 w-24 shrink-0 overflow-hidden rounded-xl bg-canvas">
+            <Avatar seed={traveller.avatarSeed} purpose={traveller.purpose} className="-mt-1 h-44 w-auto -translate-x-3" />
           </div>
           <div className="grid min-w-0 flex-1 grid-cols-2 gap-x-4 gap-y-2">
             <div className="col-span-2">
@@ -89,7 +89,7 @@ function Fields({ traveller, doc }: { traveller: Traveller; doc: DeskDocument })
     case 'return_ticket': {
       const x = d.return_ticket!
       return (
-        <div className="grid grid-cols-2 gap-x-4 gap-y-2 border-t-2 border-dashed border-slate-300 pt-2">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
           <div className="col-span-2">
             <Field label={f.name} value={x.name} />
           </div>
@@ -124,34 +124,38 @@ function Fields({ traveller, doc }: { traveller: Traveller; doc: DeskDocument })
   }
 }
 
-/** Full-size document, used in the zoom view (and later under the stamp). */
+/** Full-size document as a clean ID card, used in the zoom view and under the stamp. */
 export default function DocumentCard({ traveller, doc, children }: { traveller: Traveller; doc: DeskDocument; children?: ReactNode }) {
   const { t } = useText()
   const style = STYLE[doc.docId]
   return (
-    <div className={`relative w-full overflow-hidden rounded-2xl p-5 shadow-2xl ring-2 ${style.card}`}>
-      <div className={`mb-3 flex items-center gap-2 text-lg font-extrabold tracking-wide uppercase ${style.title}`}>
+    <div className="relative w-full overflow-hidden rounded-2xl bg-white shadow-lift">
+      <div className="flex items-center gap-2 px-5 py-3 text-lg font-bold text-white" style={{ background: style.strip }}>
         <span className="text-2xl">{style.icon}</span>
         {t(rules.documents[doc.docId])}
       </div>
-      <Fields traveller={traveller} doc={doc} />
+      <div className="p-5">
+        <Fields traveller={traveller} doc={doc} />
+      </div>
       {children}
     </div>
   )
 }
 
-/** Small card on the desk. */
+/** Small ID card on the desk. */
 export function DocumentThumb({ traveller, doc }: { traveller: Traveller; doc: DeskDocument }) {
   const { t } = useText()
   const style = STYLE[doc.docId]
   const name = doc.slot === 'passport' ? traveller.documents.passport.name : traveller.documents[doc.slot]?.name
   return (
-    <div className={`flex h-full w-full flex-col justify-between rounded-xl p-3 text-left shadow-lg ring-2 ${style.card}`}>
-      <div className={`flex items-center gap-1.5 text-xs font-extrabold leading-tight uppercase ${style.title}`}>
-        <span className="text-xl">{style.icon}</span>
-        <span className="line-clamp-2">{t(rules.documents[doc.docId])}</span>
+    <div className="flex h-full w-full flex-col overflow-hidden rounded-xl bg-white text-left shadow-soft">
+      <div className="flex items-center gap-1.5 px-3 py-1.5 text-xs leading-tight font-bold text-white" style={{ background: style.strip }}>
+        <span className="text-base">{style.icon}</span>
+        <span className="line-clamp-1">{t(rules.documents[doc.docId])}</span>
       </div>
-      <div className="truncate text-sm font-semibold">{name}</div>
+      <div className="flex flex-1 items-end px-3 pb-2.5">
+        <span className="truncate text-sm font-semibold text-ink">{name}</span>
+      </div>
     </div>
   )
 }

@@ -10,16 +10,15 @@ export default function Strikes() {
 
   return (
     <div className="flex items-center gap-2" aria-label={`${label}: ${strikes}/${config.strikesToFail}`}>
-      <span className="hidden text-xs font-semibold tracking-wider text-slate-400 uppercase sm:inline">{label}</span>
+      <span className="hidden text-sm font-semibold text-muted sm:inline">{label}</span>
       {Array.from({ length: config.strikesToFail }, (_, i) => {
         const hit = i < strikes
         return (
           <motion.span
             key={i}
-            animate={hit ? { scale: [1.8, 1], rotate: [-20, 0] } : { scale: 1 }}
-            className={`grid size-8 place-items-center rounded-md text-lg font-extrabold ${
-              hit ? 'bg-neon-red/20 text-neon-red glow-red' : 'bg-night-800 text-slate-600 ring-1 ring-white/10'
-            }`}
+            animate={hit ? { scale: [1.5, 1] } : { scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className={`grid size-8 place-items-center rounded-lg text-base font-extrabold ${hit ? 'bg-deny text-white' : 'bg-canvas text-line'}`}
           >
             ✕
           </motion.span>

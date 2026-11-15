@@ -4,7 +4,7 @@ import { createRng, pick } from '../utils/random'
 
 const SKIN = ['#f6d5b8', '#ecc19c', '#d9a07a', '#b97c55', '#8d5a3b', '#5e3a24']
 const HAIR = ['#1b1b1b', '#3b2416', '#6b4423', '#a8743a', '#d9b26f', '#9a9a9a']
-const SHIRT = ['#22e4ff', '#ff3fa4', '#ffc53d', '#39ff88', '#a78bfa', '#fb923c']
+const SHIRT = ['#3b82f6', '#f59e0b', '#8b5cf6', '#06b6d4', '#f97316', '#ec4899']
 type HairStyle = 'short' | 'long' | 'bun' | 'curly'
 const HAIR_STYLES: HairStyle[] = ['short', 'long', 'bun', 'curly']
 
@@ -39,9 +39,9 @@ function Luggage({ purpose }: { purpose: PurposeId }) {
     // Backpack straps + books in hand
     return (
       <g>
-        <path d="M76 128 L70 196" stroke="#1f2560" strokeWidth="7" strokeLinecap="round" />
-        <path d="M124 128 L130 196" stroke="#1f2560" strokeWidth="7" strokeLinecap="round" />
-        <rect x="140" y="178" width="30" height="38" rx="3" fill="#ffc53d" transform="rotate(-8 155 197)" />
+        <path d="M76 128 L70 196" stroke="#374151" strokeWidth="7" strokeLinecap="round" />
+        <path d="M124 128 L130 196" stroke="#374151" strokeWidth="7" strokeLinecap="round" />
+        <rect x="140" y="178" width="30" height="38" rx="3" fill="#fbbf24" transform="rotate(-8 155 197)" />
         <rect x="143" y="182" width="24" height="5" fill="#b45309" transform="rotate(-8 155 197)" />
       </g>
     )
@@ -50,7 +50,7 @@ function Luggage({ purpose }: { purpose: PurposeId }) {
     // Tie + briefcase
     return (
       <g>
-        <path d="M100 128 L94 140 L100 182 L106 140Z" fill="#141842" />
+        <path d="M100 128 L94 140 L100 182 L106 140Z" fill="#1e3a8a" />
         <rect x="146" y="214" width="46" height="34" rx="4" fill="#5b3a1e" stroke="#2b1a0b" strokeWidth="2" />
         <path d="M160 214 V206 H178 V214" fill="none" stroke="#2b1a0b" strokeWidth="4" />
       </g>
@@ -60,9 +60,9 @@ function Luggage({ purpose }: { purpose: PurposeId }) {
   return (
     <g>
       <path d="M182 150 V198" stroke="#9ca3af" strokeWidth="4" />
-      <rect x="160" y="196" width="46" height="66" rx="8" fill="#ff3fa4" stroke="#9d174d" strokeWidth="2" />
-      <circle cx="174" cy="216" r="6" fill="#ffc53d" />
-      <rect x="184" y="230" width="14" height="10" rx="2" fill="#22e4ff" />
+      <rect x="160" y="196" width="46" height="66" rx="8" fill="#6366f1" stroke="#4338ca" strokeWidth="2" />
+      <circle cx="174" cy="216" r="6" fill="#fbbf24" />
+      <rect x="184" y="230" width="14" height="10" rx="2" fill="#e0e7ff" />
       <circle cx="168" cy="266" r="4" fill="#111" />
       <circle cx="198" cy="266" r="4" fill="#111" />
       <g fill="#111">
@@ -85,7 +85,7 @@ export default function Avatar({ seed, purpose, className }: { seed: number; pur
     <svg viewBox="0 0 220 280" className={className} aria-hidden>
       {/* Body */}
       <path d="M52 280 Q52 140 100 128 Q148 140 148 280Z" fill={look.shirt} opacity="0.9" />
-      <path d="M86 128 L100 146 L114 128" fill="none" stroke="#05061a" strokeOpacity="0.3" strokeWidth="3" />
+      <path d="M86 128 L100 146 L114 128" fill="none" stroke="#111827" strokeOpacity="0.3" strokeWidth="3" />
       {/* Neck + head */}
       <rect x="90" y="104" width="20" height="26" rx="6" fill={look.skin} />
       {look.style === 'long' && <Hair style="long" color={look.hair} />}

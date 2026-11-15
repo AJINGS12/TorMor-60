@@ -26,8 +26,8 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
 
   return (
     <div className="min-w-0 flex-1">
-      <div className="mb-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
-        {t(ui.desk)} · <span className="normal-case">{t(ui.tapToZoom)}</span>
+      <div className="mb-2 text-sm font-semibold text-muted">
+        {t(ui.desk)} · <span className="font-normal">{t(ui.tapToZoom)}</span>
       </div>
       <div className="-my-3 flex min-h-28 gap-3 overflow-x-auto overflow-y-hidden py-3">
         <AnimatePresence>
@@ -36,10 +36,10 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
               key={`${traveller.id}-${doc.slot}`}
               layoutId={`${traveller.id}-${doc.slot}`}
               onClick={() => setZoomed(doc.slot)}
-              initial={{ y: -140, opacity: 0, rotate: -12 }}
-              animate={{ y: 0, opacity: 1, rotate: i % 2 ? 2 : -2 }}
+              initial={{ y: -120, opacity: 0, rotate: -6 }}
+              animate={{ y: 0, opacity: 1, rotate: i % 2 ? 1 : -1 }}
               exit={{ y: -140, opacity: 0 }}
-              transition={{ type: 'spring', damping: 18, stiffness: 220 }}
+              transition={{ type: 'spring', damping: 22, stiffness: 260 }}
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.96 }}
               className="relative h-28 w-40 shrink-0 cursor-zoom-in sm:w-44"
@@ -63,12 +63,12 @@ export default function Desk({ traveller }: { traveller: Traveller }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <button aria-label={t(ui.close)} className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setZoomed(null)} />
+            <button aria-label={t(ui.close)} className="absolute inset-0 bg-ink/25 backdrop-blur-sm" onClick={() => setZoomed(null)} />
             <motion.div layoutId={`${traveller.id}-${zoomedDoc.slot}`} className="relative w-full max-w-xl">
               <DocumentCard traveller={traveller} doc={zoomedDoc} />
               <button
                 onClick={() => setZoomed(null)}
-                className="mt-3 h-12 w-full rounded-xl bg-night-800 text-base font-semibold text-white ring-1 ring-white/20 hover:bg-night-700"
+                className="mt-3 h-14 w-full rounded-2xl bg-white text-lg font-semibold text-ink shadow-soft hover:bg-canvas"
               >
                 {t(ui.close)}
               </button>

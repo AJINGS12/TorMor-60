@@ -3,10 +3,8 @@ import { rules } from '../engine/rules'
 import type { Decision } from '../engine/types'
 import { useText } from '../i18n/useText'
 
-const INK: Record<Decision, { text: string; ring: string; hex: string }> = {
-  APPROVE: { text: 'text-neon-green', ring: 'border-neon-green', hex: '#39ff88' },
-  DENY: { text: 'text-neon-red', ring: 'border-neon-red', hex: '#ff3b5c' },
-}
+/** Stamp ink: green only for APPROVED, red only for DENIED. */
+const INK: Record<Decision, string> = { APPROVE: '#16a34a', DENY: '#dc2626' }
 
 /** The inked stamp mark (static). */
 export function StampMark({ decision, size = 'lg' }: { decision: Decision; size?: 'sm' | 'lg' }) {
@@ -15,10 +13,10 @@ export function StampMark({ decision, size = 'lg' }: { decision: Decision; size?
   const label = t(decision === 'APPROVE' ? rules.ui.game.approve : rules.ui.game.deny)
   return (
     <div
-      className={`rounded-xl border-[5px] font-extrabold tracking-widest whitespace-nowrap uppercase mix-blend-screen ${ink.text} ${ink.ring} ${
-        size === 'lg' ? 'px-6 py-2 text-4xl sm:text-5xl' : 'border-[3px] px-2 py-0.5 text-xs'
+      className={`rounded-xl font-extrabold tracking-widest whitespace-nowrap uppercase opacity-90 mix-blend-multiply ${
+        size === 'lg' ? 'border-[6px] px-6 py-2 text-5xl sm:text-6xl' : 'border-[3px] px-2 py-0.5 text-xs'
       }`}
-      style={{ textShadow: `0 0 14px ${ink.hex}`, boxShadow: `0 0 18px ${ink.hex}66, inset 0 0 12px ${ink.hex}55` }}
+      style={{ color: ink, borderColor: ink }}
     >
       {label}
     </div>
@@ -41,7 +39,7 @@ export function InkSplash({ color }: { color: string }) {
         <motion.span
           key={i}
           className="absolute rounded-full"
-          style={{ width: d.r, height: d.r, marginLeft: -d.r / 2, marginTop: -d.r / 2, background: color, boxShadow: `0 0 10px ${color}` }}
+          style={{ width: d.r, height: d.r, marginLeft: -d.r / 2, marginTop: -d.r / 2, background: color }}
           initial={{ x: 0, y: 0, scale: 0, opacity: 1 }}
           animate={{ x: d.x, y: d.y, scale: [0, 1.3, 1], opacity: [1, 1, 0] }}
           transition={{ duration: 0.7, ease: 'easeOut' }}
@@ -49,7 +47,7 @@ export function InkSplash({ color }: { color: string }) {
       ))}
       <motion.span
         className="absolute -mt-24 -ml-24 size-48 rounded-full"
-        style={{ border: `4px solid ${color}` }}
+        style={{ border: `3px solid ${color}`, opacity: 0.5 }}
         initial={{ scale: 0.2, opacity: 0.9 }}
         animate={{ scale: 1.8, opacity: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -76,7 +74,7 @@ export function StampSlam({ decision, onImpact, onDone }: { decision: Decision; 
     >
       <StampMark decision={decision} />
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.65, duration: 0 }}>
-        <InkSplash color={INK[decision].hex} />
+        <InkSplash color={INK[decision]} />
       </motion.div>
     </motion.div>
   )

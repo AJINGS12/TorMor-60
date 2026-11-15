@@ -367,13 +367,13 @@
 
   "caseResult": {
     "template": {
-      "en": "{verdictIcon} {verdictText}. {flawExplain} You asked {askedNecessary}/{totalNecessary} needed questions.{missedList}",
+      "en": "{verdictIcon} {verdictText} {flawExplain} You asked {askedNecessary}/{totalNecessary} needed questions.{missedList}",
       "th": "{verdictIcon} {verdictText} {flawExplain} คุณถามคำถามที่จำเป็น {askedNecessary}/{totalNecessary} ข้อ{missedList}"
     },
     "verdicts": {
       "correct": { "icon": "✅", "en": "Correct!",   "th": "ถูกต้อง!" },
-      "wrong":   { "icon": "❌", "en": "Wrong call", "th": "ตัดสินผิด" },
-      "timeout": { "icon": "⏰", "en": "Time's up",  "th": "หมดเวลา" }
+      "wrong":   { "icon": "❌", "en": "Wrong call.", "th": "ตัดสินผิด" },
+      "timeout": { "icon": "⏰", "en": "Time's up.",  "th": "หมดเวลา" }
     },
     "missedPrefix": { "en": " Missed: ", "th": " ที่พลาดไป: " },
     "noFlawExplain": { "en": "All documents were in order.", "th": "เอกสารครบถ้วนและถูกต้อง" }

@@ -10,8 +10,8 @@ function TypingDots() {
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
-          className="size-3 rounded-full bg-slate-500"
-          animate={{ y: [0, -6, 0], opacity: [0.4, 1, 0.4] }}
+          className="size-3 rounded-full bg-muted"
+          animate={{ y: [0, -5, 0], opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
         />
       ))}
@@ -35,23 +35,21 @@ export default function SpeechBubble({ traveller }: { traveller: Traveller }) {
       {visible && (
         <motion.div
           key={`${traveller.id}-${questionId}`}
-          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+          initial={{ opacity: 0, scale: 0.9, y: 8 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.12 } }}
-          transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-          className="relative w-[min(22rem,42vw)] origin-bottom-left rounded-2xl rounded-bl-sm bg-white px-4 py-3 text-slate-900 shadow-[0_0_30px_rgb(34_228_255/0.35)]"
+          exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.12 } }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
+          className="relative w-[min(24rem,42vw)] origin-bottom-left rounded-2xl rounded-bl-md bg-white px-5 py-4 shadow-lift"
           aria-live="polite"
         >
-          <div className="mb-1 text-xs font-semibold text-cyan-700">🧑‍✈️ {questionId && t(getQuestion(questionId))}</div>
+          <div className="mb-1 text-sm font-medium text-muted">{questionId && t(getQuestion(questionId))}</div>
           {answeringId ? (
             <span aria-label={t(rules.ui.game.answering)}>
               <TypingDots />
             </span>
           ) : (
-            answer && <p className="text-lg leading-snug font-semibold sm:text-xl">{t(answer.text)}</p>
+            answer && <p className="text-xl leading-snug font-semibold text-ink sm:text-2xl">{t(answer.text)}</p>
           )}
-          {/* Tail pointing at the traveller */}
-          <span className="absolute -bottom-2 left-0 size-4 [clip-path:polygon(0_0,100%_0,0_100%)] bg-white" />
         </motion.div>
       )}
     </AnimatePresence>

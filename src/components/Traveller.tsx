@@ -7,8 +7,8 @@ import Flag from './Flag'
 
 const walk: Variants = {
   hidden: { x: '-70vw', opacity: 0 },
-  visible: { x: 0, opacity: 1, transition: { duration: 1.4, ease: 'easeOut' } },
-  exit: { x: '70vw', opacity: 0, transition: { duration: 1.1, ease: 'easeIn' } },
+  visible: { x: 0, opacity: 1, transition: { duration: 1.1, ease: 'easeOut' } },
+  exit: { x: '70vw', opacity: 0, transition: { duration: 0.9, ease: 'easeIn' } },
 }
 
 /** The traveller: walks in from the left, walks off to the right. */
@@ -36,10 +36,10 @@ export default function Traveller({
       className="flex h-full flex-col items-center justify-end"
     >
       {/* Tag above the head */}
-      <div className="mb-1 flex items-center gap-2 rounded-full bg-night-900/90 px-3 py-1.5 text-sm font-semibold whitespace-nowrap ring-1 ring-neon-cyan/50 glow-cyan sm:text-base">
+      <div className="mb-2 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-base font-semibold whitespace-nowrap shadow-soft sm:text-lg">
         <Flag code={traveller.country.code} className="h-5" />
-        <span className="text-white">{t(traveller.country)}</span>
-        <span className="text-neon-cyan">· {t(persona)}</span>
+        <span className="text-ink">{t(traveller.country)}</span>
+        <span className="text-brand">· {t(persona)}</span>
       </div>
 
       <motion.div
@@ -47,7 +47,7 @@ export default function Traveller({
         transition={{ duration: isWalking ? 0.45 : 3, repeat: Infinity, ease: 'easeInOut' }}
         className="h-[min(78%,300px)] min-h-32"
       >
-        <Avatar seed={traveller.avatarSeed} purpose={traveller.purpose} className="h-full w-auto drop-shadow-[0_0_24px_rgb(34_228_255/0.25)]" />
+        <Avatar seed={traveller.avatarSeed} purpose={traveller.purpose} className="h-full w-auto drop-shadow-[0_10px_16px_rgb(17_24_39/0.12)]" />
       </motion.div>
     </motion.div>
   )

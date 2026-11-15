@@ -6,11 +6,8 @@ import { selectIsLastRound, useGameStore } from '../store/gameStore'
 import Headline from './Headline'
 
 const cr = rules.caseResult
-const VERDICT_STYLE = {
-  correct: 'ring-neon-green/80 glow-green',
-  wrong: 'ring-neon-red/80 glow-red',
-  timeout: 'ring-neon-amber/80',
-} as const
+/** Accent strip per outcome: brand for correct; red for mistakes and timeouts (both are strikes). */
+const VERDICT_STRIP = { correct: 'bg-brand', wrong: 'bg-deny', timeout: 'bg-deny' } as const
 
 /** Builds the case summary sentence from caseResult.template. */
 function useSummary(traveller: Traveller, result: RoundResult) {
@@ -43,25 +40,28 @@ export default function CaseResult({ traveller, result }: { traveller: Traveller
       exit={{ opacity: 0, y: 30 }}
       className="flex w-[min(34rem,92vw)] flex-col gap-3"
     >
-      <div className={`rounded-2xl bg-night-900/95 p-5 ring-2 backdrop-blur ${VERDICT_STYLE[result.outcome]}`}>
+      <div className="overflow-hidden rounded-2xl bg-white shadow-lift">
+        <div className={`h-1.5 ${VERDICT_STRIP[result.outcome]}`} />
+        <div className="p-6">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-5xl leading-none" aria-hidden>
             {cr.verdicts[result.outcome].icon}
           </span>
-          <span className="rounded-full bg-neon-amber/15 px-3 py-1 text-2xl font-extrabold text-neon-amber tabular-nums">
+          <span className="rounded-full bg-brand-50 px-4 py-1.5 text-2xl font-extrabold text-brand tabular-nums">
             {t(rules.ui.game.points, { points })}
-            {result.breakdown.streakMultiplier > 1 && <span className="ml-1 text-base text-neon-pink">🔥×{result.breakdown.streakMultiplier}</span>}
+            {result.breakdown.streakMultiplier > 1 && <span className="ml-1 text-base">🔥×{result.breakdown.streakMultiplier}</span>}
           </span>
         </div>
         {/* The JSON template already starts with the verdict, so it is rendered once, as-is. */}
-        <p className="text-lg leading-relaxed font-semibold text-slate-100 sm:text-xl">{summary}</p>
+        <p className="text-lg leading-relaxed font-medium text-ink sm:text-xl">{summary}</p>
         <button
           onClick={nextTraveller}
           autoFocus
-          className="mt-4 h-14 w-full rounded-xl bg-neon-cyan text-lg font-extrabold text-night-950 glow-cyan hover:brightness-110"
+          className="mt-5 h-16 w-full animate-hint rounded-2xl bg-brand text-xl font-bold text-white hover:bg-brand-600"
         >
           {t(isLastRound ? rules.ui.game.finish : rules.ui.game.next)} →
         </button>
+        </div>
       </div>
       {headline && <Headline headline={headline} />}
     </motion.div>

@@ -7,14 +7,14 @@ export default function Headline({ headline }: { headline: LocalizedText }) {
   const { t } = useText()
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 1.6, rotate: -14 }}
-      animate={{ opacity: 1, scale: 1, rotate: -2 }}
-      transition={{ delay: 0.35, type: 'spring', damping: 14, stiffness: 180 }}
-      className="rounded-md bg-[#f4efe1] px-4 py-3 font-extrabold text-slate-900 shadow-[0_10px_30px_rgb(0_0_0/0.5)] ring-1 ring-black/10"
+      initial={{ opacity: 0, y: 12, rotate: -3 }}
+      animate={{ opacity: 1, y: 0, rotate: -1 }}
+      transition={{ delay: 0.3, duration: 0.3, ease: 'easeOut' }}
+      className="rounded-2xl bg-[#fffdf6] px-5 py-4 text-ink shadow-soft"
     >
-      <div className="mb-1 h-1 w-full bg-slate-900" />
-      <p className="text-lg leading-snug sm:text-xl">{t(headline)}</p>
-      <div className="mt-1 h-0.5 w-full bg-slate-900" />
+      <div className="mb-2 h-1 w-full rounded-full bg-ink" />
+      <p className="text-lg leading-snug font-extrabold sm:text-xl">{t(headline)}</p>
+      <div className="mt-2 h-0.5 w-full rounded-full bg-ink/60" />
     </motion.div>
   )
 }

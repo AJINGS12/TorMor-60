@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { generateShift } from '../engine/generateTraveller'
-import { evaluate } from '../engine/requirements'
+import { evaluate, getRequirements } from '../engine/requirements'
 import { config, rules } from '../engine/rules'
 import { isFired } from '../engine/scoring'
 import { useLeaderboard } from './leaderboard'
@@ -215,3 +215,9 @@ export const selectTraveller = (s: Snapshot): Traveller | undefined => s.travell
 
 /** True when this round ends the shift (last traveller, or fired). */
 export const selectIsLastRound = (s: Snapshot): boolean => isFired(s.strikes) || s.index + 1 >= s.travellers.length
+
+/** True once every question this traveller's case needs has been asked (drives the "stamp now" hint). */
+export const selectAllNeededAsked = (s: Pick<GameState, 'travellers' | 'index' | 'askedQuestionIds'>): boolean => {
+  const traveller = s.travellers[s.index]
+  return !!traveller && getRequirements(traveller).necessaryQuestionIds.every((q) => s.askedQuestionIds.includes(q))
+}
