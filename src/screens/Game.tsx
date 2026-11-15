@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
 import Counter from '../components/Counter'
 import DebugOverlay from '../components/DebugOverlay'
+import Desk from '../components/Desk'
+import Traveller from '../components/Traveller'
 import LanguageToggle from '../components/LanguageToggle'
 import Rulebook from '../components/Rulebook'
 import Strikes from '../components/Strikes'
@@ -82,11 +85,6 @@ export default function Game() {
   const travellerArrived = useGameStore((s) => s.travellerArrived)
   const nextTraveller = useGameStore((s) => s.nextTraveller)
 
-  // Step 1: no entry animation yet — start the timer as soon as a traveller is up.
-  useEffect(() => {
-    if (phase === 'entering') travellerArrived()
-  }, [phase, travellerArrived])
-
   if (!traveller) return null
 
   return (
@@ -96,20 +94,33 @@ export default function Game() {
       <div className="flex min-h-0 flex-1">
         <main className="flex min-w-0 flex-1 flex-col">
           {/* Traveller area */}
-          <section className="relative min-h-0 flex-1">
+          <section className="relative min-h-0 flex-1 overflow-hidden">
             <Backdrop />
+            <div className="absolute inset-0 pt-14">
+              <AnimatePresence mode="wait">
+                <Traveller
+                  key={traveller.id}
+                  traveller={traveller}
+                  walking={phase === 'entering'}
+                  onArrived={travellerArrived}
+                />
+              </AnimatePresence>
+            </div>
           </section>
 
           {/* Officer's counter */}
           <Counter>
-            <div className="flex min-h-40 items-center justify-between gap-4">
-              <span className="rounded-md bg-black/30 px-3 py-1 text-sm text-slate-300">
-                {t(ui.today, { date: date(traveller.gameDate) })}
+            <div className="mb-2 flex justify-end">
+              <span className="rounded-md bg-black/30 px-3 py-1 text-sm font-semibold text-slate-200">
+                📅 {t(ui.today, { date: date(traveller.gameDate) })}
               </span>
+            </div>
+            <div className="flex items-end gap-4">
+              <Desk traveller={traveller} />
               {phase === 'result' && (
                 <button
                   onClick={nextTraveller}
-                  className="h-14 rounded-xl bg-neon-cyan px-6 text-lg font-extrabold text-night-950 glow-cyan"
+                  className="h-14 shrink-0 rounded-xl bg-neon-cyan px-6 text-lg font-extrabold text-night-950 glow-cyan"
                 >
                   {t(isLastRound ? ui.finish : ui.next)}
                 </button>

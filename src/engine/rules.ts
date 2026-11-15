@@ -111,3 +111,9 @@ function validate() {
 }
 
 validate()
+
+/** Any country or transit country by code (nationalities first). */
+export function findCountry(code: string): TransitCountry | undefined {
+  const routes = Object.keys(data.routeChance) as RouteType[]
+  return [...countries, ...routes.flatMap(transitCountriesFor)].find((c) => c.code === code)
+}
